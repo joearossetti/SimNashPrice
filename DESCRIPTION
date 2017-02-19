@@ -7,7 +7,7 @@ Maintainer: Joseph Rossett <rossetti.28@osu.edu>
 Description: This pacakge takes as input results from a BLP style demand estimation.
     It will compute the so called Bertrand Nash Prices, the resulting market shares, and profits. 
     It also has a simulation routine for drawing from the structural errors and computing ex-ante expectations of shares, prices, and profits
-License: Proprietary
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/joearossetti/SimNashPrice
