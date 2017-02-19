@@ -10,3 +10,4 @@ Description: This pacakge takes as input results from a BLP style demand estimat
 License: Proprietary
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/joearossetti/SimNashPrice
