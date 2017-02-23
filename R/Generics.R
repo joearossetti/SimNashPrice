@@ -30,6 +30,6 @@ share <- function(x){
 #' @export
 #' @seealso \code{\link{zeta_fixed_point.Logit_Demand_Market}}
 #' @examples #zeta_fixed_point(x)
-zeta_fixed_point <- function(x){
+zeta_fixed_point <- function(x, tol){
   UseMethod('zeta_fixed_point')
 }
