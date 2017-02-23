@@ -31,3 +31,11 @@ my_ldm_obj <- share(my_ldm_obj)
 my_ldm_obj <- Ds_fun(my_ldm_obj)
 
 P_star <- zeta_fixed_point(my_ldm_obj, tol = 1e-6)
+
+
+my_struct_error_fun <- function(draws, ...){
+  rnorm(n=draws, ...)
+}
+
+my_markets <- sim_struct_errors(my_ldm_obj, my_struct_error_fun, draws=500, 1e-6, mean=0, sd=1)
+
