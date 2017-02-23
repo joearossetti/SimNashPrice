@@ -4,7 +4,7 @@
 \alias{zeta_fixed_point}
 \title{Zeta Fixed Point Iterations}
 \usage{
-zeta_fixed_point(x)
+zeta_fixed_point(x, tol)
 }
 \arguments{
 \item{x}{object with a zeta fixed point method}
