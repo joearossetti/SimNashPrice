@@ -8,6 +8,7 @@
 #' @param struct_error_draw_fun function that returns a list of market objects length draws evaluated at each draw from the errors
 #' @param draws numer of draws to take (passed to struct_error_draw_fun)
 #' @param tol tolerance for the fixed point
+#' @param logit_market_method a method for the class 'Logit_Demand_Market' to apply to each draw (for example computing firm profits)
 #' @param ... additional arguments to struct_error_draw_fun
 #'
 #' @return list of 'Logit_Demand_Market' object with the NE corresponding to the draws from the structural errors
@@ -48,13 +49,13 @@
 #'}
 #'
 #'my_markets <- sim_struct_errors(my_ldm_obj, my_struct_error_fun, draws=500, 1e-6, mean=0, sd=1)
-
-sim_struct_errors <- function(logit_market, struct_error_draw_fun, draws, tol, ...){
+sim_struct_errors <- function(logit_market, struct_error_draw_fun, logit_market_method, draws, tol, ...){
   errors <- as.list(struct_error_draw_fun(draws, ...))
   markets <- vector('list', 500)
   for(i in 1:500){
     my_ldm_obj$Market$Struct_Err <- errors[[i]]
     markets[[i]] <- zeta_fixed_point(my_ldm_obj, tol = tol)
+    markets[[i]] <- logit_market_method(markets[[i]])
   }
   return(markets)
 }
