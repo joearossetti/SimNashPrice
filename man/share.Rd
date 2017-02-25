@@ -21,4 +21,3 @@ Compute Market shares
 \seealso{
 \code{\link{share.Logit_Demand_Market}}
 }
-

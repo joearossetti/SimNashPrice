@@ -49,4 +49,3 @@ my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my
 my_ldm_obj <- share(my_ldm_obj)
 P_star <- zeta_fixed_point(my_ldm_obj, tol = 1e-6)
 }
-

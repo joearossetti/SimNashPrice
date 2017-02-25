@@ -22,4 +22,3 @@ firm <- c(1,1,1,0,0)
 jt <- length(Firm)
 O <- O_fun(Firm=firm, Jt=jt)
 }
-

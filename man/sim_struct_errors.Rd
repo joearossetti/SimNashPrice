@@ -4,12 +4,15 @@
 \alias{sim_struct_errors}
 \title{Title Simulate Markets with different Structural Errors}
 \usage{
-sim_struct_errors(logit_market, struct_error_draw_fun, draws, tol, ...)
+sim_struct_errors(logit_market, struct_error_draw_fun, logit_market_method,
+  draws, tol, ...)
 }
 \arguments{
 \item{logit_market}{'Logit_Demand_Market' object}
 
 \item{struct_error_draw_fun}{function that returns a list of market objects length draws evaluated at each draw from the errors}
+
+\item{logit_market_method}{a method for the class 'Logit_Demand_Market' to apply to each draw (for example computing firm profits)}
 
 \item{draws}{numer of draws to take (passed to struct_error_draw_fun)}
 
@@ -61,4 +64,3 @@ rnorm(n=draws, ...)
 
 my_markets <- sim_struct_errors(my_ldm_obj, my_struct_error_fun, draws=500, 1e-6, mean=0, sd=1)
 }
-
