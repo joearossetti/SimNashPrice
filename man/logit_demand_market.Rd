@@ -4,24 +4,30 @@
 \alias{logit_demand_market}
 \title{Constructor of Logit Demand Objects}
 \usage{
-logit_demand_market(Firms, Delta, Mc, Struct_error, Deriv_price)
+logit_demand_market(Firms, Delta = rep(0, Jt), Mc = rep(0, Jt),
+  Price = rep(0, Jt), Share = rep(0, Jt), Struct_error = rep(0, Jt),
+  Deriv_price = 1)
 }
 \arguments{
-\item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product}
+\item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product (required)}
 
 \item{Delta}{vector of the fixed part of consumer utility for each product in the market}
 
 \item{Mc}{vector of the fixed part of marginal cost for each product in the market}
 
+\item{Price}{vector of prices}
+
+\item{Share}{vector of shares}
+
 \item{Struct_error}{vector giving the structural error in the consumers utility function for each product}
 
-\item{Deriv_price}{a constand (eventually a function) that will compute the derivated of consumer utility with respect to price}
+\item{Deriv_price}{a constant (eventually a function) that will compute the derivated of consumer utility with respect to price}
 }
 \value{
 an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
  Deriv_price; O the ownership matrix;
  Ds a place holder for the jacobian of the shares;
- and Jt the number of products
+ and Jt the number of products. (All except Firms )
 }
 \description{
 Constructor of Logit Demand Objects
@@ -56,3 +62,4 @@ my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,0,0))
 
 my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 }
+

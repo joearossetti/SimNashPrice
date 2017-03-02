@@ -21,3 +21,4 @@ Compute Jacobian of Market Shares
 \seealso{
 \code{\link{Ds_fun.Logit_Demand_Market}}
 }
+

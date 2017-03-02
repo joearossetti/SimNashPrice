@@ -18,3 +18,4 @@ Title Compute Firm Profits
 \examples{
 #NA
 }
+

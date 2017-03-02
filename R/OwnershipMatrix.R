@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' firm <- c(1,1,1,0,0)
-#' jt <- length(Firm)
+#' jt <- length(firm)
 #' O <- O_fun(Firm=firm, Jt=jt)
 O_fun <- function(Firm, Jt){
   O_mat <- matrix(ncol = Jt, nrow = Jt, data = 0)

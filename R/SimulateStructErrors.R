@@ -48,7 +48,7 @@
 #' rnorm(n=draws, ...)
 #'}
 #'
-#'my_markets <- sim_struct_errors(my_ldm_obj, my_struct_error_fun, draws=500, 1e-6, mean=0, sd=1)
+#'my_markets <- sim_struct_errors(logit_market=my_ldm_obj, struct_error_draw_fun=my_struct_error_fun, logit_market_method=firm_profits,draws=500, tol=1e-6, mean=0, sd=1)
 sim_struct_errors <- function(logit_market, struct_error_draw_fun, logit_market_method, draws, tol, ...){
   errors <- as.list(struct_error_draw_fun(draws, ...))
   markets <- vector('list', 500)

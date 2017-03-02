@@ -19,6 +19,7 @@ Make Ownership Matrices
 }
 \examples{
 firm <- c(1,1,1,0,0)
-jt <- length(Firm)
+jt <- length(firm)
 O <- O_fun(Firm=firm, Jt=jt)
 }
+

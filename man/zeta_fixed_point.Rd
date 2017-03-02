@@ -21,3 +21,4 @@ Zeta Fixed Point Iterations
 \seealso{
 \code{\link{zeta_fixed_point.Logit_Demand_Market}}
 }
+

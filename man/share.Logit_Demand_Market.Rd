@@ -46,3 +46,4 @@ my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,0,0))
 my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 my_ldm_obj <- share(my_ldm_obj)
 }
+
