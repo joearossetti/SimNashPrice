@@ -4,9 +4,8 @@
 \alias{logit_demand_market}
 \title{Constructor of Logit Demand Objects}
 \usage{
-logit_demand_market(Firms, Delta = rep(0, Jt), Mc = rep(0, Jt),
-  Price = rep(0, Jt), Share = rep(0, Jt), Struct_error = rep(0, Jt),
-  Deriv_price = 1)
+logit_demand_market(Firms, Delta = NULL, Mc = NULL, Price = NULL,
+  Share = NULL, Struct_error = NULL, Markup = NULL, Deriv_price = 1)
 }
 \arguments{
 \item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product (required)}

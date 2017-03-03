@@ -27,15 +27,9 @@ my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,0,0))
 
 my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 
+my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 my_ldm_obj <- share(my_ldm_obj)
-my_ldm_obj <- Ds_fun(my_ldm_obj)
+my_ldm_obj <- zeta_fixed_point(my_ldm_obj, tol = 1e-6)
 
-P_star <- zeta_fixed_point(my_ldm_obj, tol = 1e-6)
-
-
-my_struct_error_fun <- function(draws, ...){
-  rnorm(n=draws, ...)
-}
-
-my_markets <- sim_struct_errors(my_ldm_obj, my_struct_error_fun, firm_profits, draws=500, 1e-6, mean=0, sd=1)
-
+my_ldm_obj <- markups(my_ldm_obj)
+my_ldm_obj <- marginal_cost(my_ldm_obj)

@@ -43,13 +43,34 @@
 #'
 #'my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 logit_demand_market <- function(Firms,
-                                Delta=rep(0, Jt),
-                                Mc=rep(0, Jt),
-                                Price=rep(0, Jt),
-                                Share=rep(0, Jt),
-                                Struct_error=rep(0, Jt),
+                                Delta=NULL,
+                                Mc=NULL,
+                                Price=NULL,
+                                Share=NULL,
+                                Struct_error=NULL,
+                                Markup=NULL,
                                 Deriv_price=1){
+
   Jt <- length(Firms)
+  if(is.null(Delta)){
+    Delta <- rep(0, Jt)
+  }
+  if(is.null(Mc)){
+    Mc <- rep(0, Jt)
+  }
+  if(is.null(Price)){
+    Price <- rep(0, Jt)
+  }
+  if(is.null(Share)){
+    Share <- rep(0, Jt)
+  }
+  if(is.null(Struct_error)){
+    Struct_error <- rep(0, Jt)
+  }
+  if(is.null(Markup)){
+    Markup <- rep(0, Jt)
+  }
+
   Market <- data.frame('Price'=Price,
                        'Share'=Share,
                        'Firms'=Firms,
