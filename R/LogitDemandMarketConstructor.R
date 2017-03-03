@@ -50,8 +50,8 @@ logit_demand_market <- function(Firms,
                                 Struct_error=rep(0, Jt),
                                 Deriv_price=1){
   Jt <- length(Firms)
-  Market <- data.frame('Price'=rep(0, Jt),
-                       'Share'=rep(0, Jt),
+  Market <- data.frame('Price'=Price,
+                       'Share'=Share,
                        'Firms'=Firms,
                        'Delta'=Delta,
                        'Mc'=Mc,
