@@ -53,8 +53,8 @@ sim_struct_errors <- function(logit_market, struct_error_draw_fun, logit_market_
   errors <- as.list(struct_error_draw_fun(draws, ...))
   markets <- vector('list', 500)
   for(i in 1:500){
-    my_ldm_obj$Market$Struct_Err <- errors[[i]]
-    markets[[i]] <- zeta_fixed_point(my_ldm_obj, tol = tol)
+    logit_market$Market$Struct_Err <- errors[[i]]
+    markets[[i]] <- zeta_fixed_point(logit_market, tol = tol)
     markets[[i]] <- logit_market_method(markets[[i]])
   }
   return(markets)
