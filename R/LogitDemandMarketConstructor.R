@@ -9,6 +9,7 @@
 #' @param Share vector of shares
 #' @param Markup vector of markups
 #' @param u_out_opt utility of the outside option defualt is the tradition 0 normalization (scalar)
+#' @param Market_Size market size (scalar) not used anywhere, but useful for interpreting results
 #'
 #' @return an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
 #'  Deriv_price; O the ownership matrix;
@@ -52,7 +53,8 @@ logit_demand_market <- function(Firms,
                                 Struct_error=NULL,
                                 Markup=NULL,
                                 Deriv_price=1,
-                                u_out_opt=0){
+                                u_out_opt=0,
+                                Market_Size=1){
 
   Jt <- length(Firms)
   if(is.null(Delta)){

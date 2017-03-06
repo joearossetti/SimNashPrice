@@ -2,8 +2,8 @@ set.seed(1234)
 
 ## Parameters of demand function
 alpha <- 4
-beta <- c(2, 3.5)
-gamma <- c(0.5, 0.3)
+beta <- c(-5, -4)
+gamma <- c(1, 0.5)
 
 ## Make a list of factor level
 char_levels <- list(char1 = c(0,1), char2 = c(0,1))
