@@ -7,6 +7,8 @@
 #' @param Deriv_price a constant (eventually a function) that will compute the derivated of consumer utility with respect to price
 #' @param Price vector of prices
 #' @param Share vector of shares
+#' @param Markup vector of markups
+#' @param u_out_opt utility of the outside option defualt is the tradition 0 normalization (scalar)
 #'
 #' @return an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
 #'  Deriv_price; O the ownership matrix;
@@ -49,7 +51,8 @@ logit_demand_market <- function(Firms,
                                 Share=NULL,
                                 Struct_error=NULL,
                                 Markup=NULL,
-                                Deriv_price=1){
+                                Deriv_price=1,
+                                u_out_opt=0){
 
   Jt <- length(Firms)
   if(is.null(Delta)){
@@ -79,6 +82,7 @@ logit_demand_market <- function(Firms,
                        'Struct_Err'=Struct_error)
   Logit_Demand_Market <- list("Market"=Market,
                               "Deriv_price"=Deriv_price,
+                              "u_out_opt"=u_out_opt,
                               'O'=O_fun(Market$Firms, Jt),
                               'Ds' = NULL,
                               'Jt' = Jt)

@@ -38,7 +38,7 @@
 share.Logit_Demand_Market <- function(x){
   delta <- x$Market$Delta - x$Deriv_price * x$Market$Price + x$Market$Struct_Err
   S <- exp(delta)
-  S <- S / (1 + sum(S))
+  S <- S / (exp(x$u_out_opt) + sum(S))
   x$Market$Share <- S
   return(x)
 }

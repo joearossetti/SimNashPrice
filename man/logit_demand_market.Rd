@@ -5,7 +5,8 @@
 \title{Constructor of Logit Demand Objects}
 \usage{
 logit_demand_market(Firms, Delta = NULL, Mc = NULL, Price = NULL,
-  Share = NULL, Struct_error = NULL, Markup = NULL, Deriv_price = 1)
+  Share = NULL, Struct_error = NULL, Markup = NULL, Deriv_price = 1,
+  u_out_opt = 0)
 }
 \arguments{
 \item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product (required)}
@@ -20,7 +21,11 @@ logit_demand_market(Firms, Delta = NULL, Mc = NULL, Price = NULL,
 
 \item{Struct_error}{vector giving the structural error in the consumers utility function for each product}
 
+\item{Markup}{vector of markups}
+
 \item{Deriv_price}{a constant (eventually a function) that will compute the derivated of consumer utility with respect to price}
+
+\item{u_out_opt}{utility of the outside option defualt is the tradition 0 normalization (scalar)}
 }
 \value{
 an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
