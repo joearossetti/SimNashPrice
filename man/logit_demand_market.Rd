@@ -4,12 +4,14 @@
 \alias{logit_demand_market}
 \title{Constructor of Logit Demand Objects}
 \usage{
-logit_demand_market(Firms, Delta = NULL, Mc = NULL, Price = NULL,
-  Share = NULL, Struct_error = NULL, Markup = NULL, Deriv_price = 1,
-  u_out_opt = 0, Market_Size = 1)
+logit_demand_market(Firms, Prod_ids = NULL, Delta = NULL, Mc = NULL,
+  Price = NULL, Share = NULL, Struct_error = NULL, Markup = NULL,
+  Deriv_price = 1, u_out_opt = 0, Market_Size = 1)
 }
 \arguments{
 \item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product (required)}
+
+\item{Prod_ids}{vector of unique ids for the products (not used by the package function, but useful in applications)}
 
 \item{Delta}{vector of the fixed part of consumer utility for each product in the market}
 

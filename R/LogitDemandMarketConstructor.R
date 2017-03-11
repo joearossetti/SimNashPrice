@@ -10,6 +10,7 @@
 #' @param Markup vector of markups
 #' @param u_out_opt utility of the outside option defualt is the tradition 0 normalization (scalar)
 #' @param Market_Size market size (scalar) not used anywhere, but useful for interpreting results
+#' @param Prod_ids vector of unique ids for the products (not used by the package function, but useful in applications)
 #'
 #' @return an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
 #'  Deriv_price; O the ownership matrix;
@@ -46,6 +47,7 @@
 #'
 #'my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 logit_demand_market <- function(Firms,
+                                Prod_ids=NULL,
                                 Delta=NULL,
                                 Mc=NULL,
                                 Price=NULL,
@@ -57,6 +59,9 @@ logit_demand_market <- function(Firms,
                                 Market_Size=1){
 
   Jt <- length(Firms)
+  if(is.null(Prod_ids)){
+    Prod_ids <- rep(0, Jt)
+  }
   if(is.null(Delta)){
     Delta <- rep(0, Jt)
   }
@@ -79,6 +84,7 @@ logit_demand_market <- function(Firms,
   Market <- data.frame('Price'=Price,
                        'Share'=Share,
                        'Firms'=Firms,
+                       'Prod_ids'=Prod_ids,
                        'Delta'=Delta,
                        'Mc'=Mc,
                        'Struct_Err'=Struct_error)

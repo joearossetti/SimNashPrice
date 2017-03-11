@@ -25,7 +25,7 @@ my_prod_table <- data.frame(j = XP$prodname, delta = (cbind(XP$char1, XP$char2) 
 my_mkt_prods <- rbind(my_prod_table[which(a1==1),], my_prod_table[which(a2==1),])
 my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,0,0))
 
-my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, u_out_opt = 1, Deriv_price = alpha)
+my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$j, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, u_out_opt = 1, Deriv_price = alpha)
 
 my_ldm_obj <- share(my_ldm_obj)
 my_ldm_obj <- zeta_fixed_point(my_ldm_obj, tol = 1e-6)
