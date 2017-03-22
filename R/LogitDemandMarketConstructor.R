@@ -11,8 +11,10 @@
 #' @param u_out_opt utility of the outside option defualt is the tradition 0 normalization (scalar)
 #' @param Market_Size market size (scalar) not used anywhere, but useful for interpreting results
 #' @param Prod_ids vector of unique ids for the products (not used by the package function, but useful in applications)
+#' @param Mc_fixed a fixed part of marginal cost
+#' @param Mc_error a marginal cost structural error (difference between Mc_fixed and Mc)
 #'
-#' @return an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
+#' @return an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc (default to Mc_fixed+Mc_error), and Struct_Err;
 #'  Deriv_price; O the ownership matrix;
 #'  Ds a place holder for the jacobian of the shares;
 #'  and Jt the number of products. (All except Firms )
@@ -53,6 +55,8 @@ logit_demand_market <- function(Firms,
                                 Price=NULL,
                                 Share=NULL,
                                 Struct_error=NULL,
+                                Mc_fixed=NULL,
+                                Mc_error=NULL,
                                 Markup=NULL,
                                 Deriv_price=1,
                                 u_out_opt=0,
@@ -77,6 +81,12 @@ logit_demand_market <- function(Firms,
   if(is.null(Struct_error)){
     Struct_error <- rep(0, Jt)
   }
+  if(is.null(Mc_error)){
+    Mc_error <- rep(0, Jt)
+  }
+  if(is.null(Mc_fixed)){
+    Mc_fixed <- rep(0, Jt)
+  }
   if(is.null(Markup)){
     Markup <- rep(0, Jt)
   }
@@ -86,7 +96,9 @@ logit_demand_market <- function(Firms,
                        'Firms'=Firms,
                        'Prod_ids'=Prod_ids,
                        'Delta'=Delta,
-                       'Mc'=Mc,
+                       'Mc'=Mc_error+Mc_fixed,
+                       'Mc_error'=Mc_error,
+                       'Mc_fixed'=Mc_fixed,
                        'Struct_Err'=Struct_error)
   Logit_Demand_Market <- list("Market"=Market,
                               "Deriv_price"=Deriv_price,

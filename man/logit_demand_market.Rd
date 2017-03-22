@@ -5,8 +5,9 @@
 \title{Constructor of Logit Demand Objects}
 \usage{
 logit_demand_market(Firms, Prod_ids = NULL, Delta = NULL, Mc = NULL,
-  Price = NULL, Share = NULL, Struct_error = NULL, Markup = NULL,
-  Deriv_price = 1, u_out_opt = 0, Market_Size = 1)
+  Price = NULL, Share = NULL, Struct_error = NULL, Mc_fixed = NULL,
+  Mc_error = NULL, Markup = NULL, Deriv_price = 1, u_out_opt = 0,
+  Market_Size = 1)
 }
 \arguments{
 \item{Firms}{logical vector with TRUE indicating ownership by firm 1 for each product (required)}
@@ -23,6 +24,10 @@ logit_demand_market(Firms, Prod_ids = NULL, Delta = NULL, Mc = NULL,
 
 \item{Struct_error}{vector giving the structural error in the consumers utility function for each product}
 
+\item{Mc_fixed}{a fixed part of marginal cost}
+
+\item{Mc_error}{a marginal cost structural error (difference between Mc_fixed and Mc)}
+
 \item{Markup}{vector of markups}
 
 \item{Deriv_price}{a constant (eventually a function) that will compute the derivated of consumer utility with respect to price}
@@ -32,7 +37,7 @@ logit_demand_market(Firms, Prod_ids = NULL, Delta = NULL, Mc = NULL,
 \item{Market_Size}{market size (scalar) not used anywhere, but useful for interpreting results}
 }
 \value{
-an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc, and Struct_Err;
+an object (list) with entries: Market, a data.frame with Price, Share, Delta, Firms, Mc (default to Mc_fixed+Mc_error), and Struct_Err;
  Deriv_price; O the ownership matrix;
  Ds a place holder for the jacobian of the shares;
  and Jt the number of products. (All except Firms )

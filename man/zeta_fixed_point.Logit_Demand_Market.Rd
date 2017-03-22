@@ -7,7 +7,7 @@
 \method{zeta_fixed_point}{Logit_Demand_Market}(x, tol)
 }
 \arguments{
-\item{x}{object of class 'Logit_Demand_Market'}
+\item{x}{object of class 'Logit_Demand_Market' (looks for Mc at x$Market$Mc)}
 
 \item{tol}{what tolerance to use for convergence in the fixed point iterations}
 }

@@ -1,6 +1,6 @@
 #' Zeta Fixed Point assuming Logit demand
 #'
-#' @param x object of class 'Logit_Demand_Market'
+#' @param x object of class 'Logit_Demand_Market' (looks for Mc at x$Market$Mc)
 #' @param tol what tolerance to use for convergence in the fixed point iterations
 #'
 #' @return x updated with prices that solve the zeta fixed point problem

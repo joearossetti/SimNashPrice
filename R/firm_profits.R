@@ -44,3 +44,17 @@ marginal_cost <- function(x){
   x$Market$Mc <- x$Market$Price - x$Market$Markup
   return(x)
 }
+
+#' Method for updating Mc
+#'
+#' @param x a 'logit_demand_market' object
+#'
+#' @return x with Mc set to Mc_fixed + Mc_error
+#' @export
+#'
+#' @examples
+#' #NA
+Mc_method <- function(x){
+  x$Market$Mc <- x$Market$Mc_fixed + x$Market$Mc_error
+  return(x)
+}
