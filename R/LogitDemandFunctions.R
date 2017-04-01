@@ -36,7 +36,8 @@
 #'my_ldm_obj <- logit_demand_market(my_mkt_prods$firm, my_mkt_prods$delta, Mc = my_mkt_prods$mc, Struct_error = Xi, Deriv_price = alpha)
 #'my_ldm_obj <- share(my_ldm_obj)
 share.Logit_Demand_Market <- function(x){
-  delta <- x$Market$Delta - x$Deriv_price * x$Market$Price + x$Market$Struct_Err
+  Mkt <- x$Market
+  delta <- Mkt$Delta - x$Deriv_price * Mkt$Price + Mkt$Struct_Err
   S <- exp(delta)
   S <- S / (exp(x$u_out_opt) + sum(S))
   x$Market$Share <- S
