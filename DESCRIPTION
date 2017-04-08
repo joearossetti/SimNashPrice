@@ -14,3 +14,12 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/joearossetti/SimNashPrice
 RoxygenNote: 5.0.1
+Imports:
+    R6
+Collate:
+    'LogitDemandClassConstructor.R'
+    'LogitDemandClassExpProf.R'
+    'LogitDemandClassZetaFP.R'
+    'LogitDemandClassMethods.R'
+    'OwnershipMatrix.R'
+    'LogitDemandClassHeader.R'
