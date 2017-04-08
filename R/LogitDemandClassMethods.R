@@ -64,7 +64,7 @@ ldmkt_firm_profits <- function(){
 #'
 #' @examples #NA
 ldmkt_markups <- function(){
-  private$Market[['Markup']] <- solve(private$Ds[[D_p]]) %*% (-private$Market[['Share']])
+  private$Market[['Markup']] <- solve(private$Ds[['D_p']]) %*% (-private$Market[['Share']])
   invisible(self)
 }
 
