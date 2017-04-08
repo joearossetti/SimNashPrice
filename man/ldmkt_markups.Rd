@@ -7,7 +7,7 @@
 ldmkt_markups()
 }
 \value{
-no return
+invisible return self
 }
 \description{
 Compute the markups over marginal cost using the first order condition for NE prices, and current market shares.

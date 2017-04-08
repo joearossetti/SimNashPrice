@@ -7,7 +7,7 @@
 ldmkt_marginal_cost()
 }
 \value{
-no return (updates the private cjs attribute)
+invisible return self
 }
 \description{
 Compute marginal costs by subtracting the markup from the price

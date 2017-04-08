@@ -59,24 +59,26 @@ ldmkt_firm_profits <- function(){
 #'
 #' Compute the markups over marginal cost using the first order condition for NE prices, and current market shares.
 #'
-#' @return no return
+#' @return invisible return self
 #' @export
 #'
 #' @examples #NA
 ldmkt_markups <- function(){
   private$Market[['Markup']] <- solve(private$Ds[[D_p]]) %*% (-private$Market[['Share']])
+  invisible(self)
 }
 
 #' Marginal Cost method
 #'
 #' Compute marginal costs by subtracting the markup from the price
 #'
-#' @return no return (updates the private cjs attribute)
+#' @return invisible return self
 #' @export
 #'
 #' @examples #NA
 ldmkt_marginal_cost <- function(){
   private$cjs <- private$Market[['Price']] - private$Market[['Markup']]
+  invisible(self)
 }
 
 #' Get Marginal Costs
