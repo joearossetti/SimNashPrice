@@ -12,6 +12,6 @@ I use the R6 package as the OOP system. This allows for traditional OOP pass by 
 
 Eventually, I will add random coefficients and nested logit demand market classes and to the package.
 
-There is also a simulation tool which is a simple wrapper around a for loop. The user specifies market primitives and a function for drawing from Berry (1994) type structural errors, and is returned a list of market instances from wich expected prices, shares and other conduct parameters can be computed.   
+There is also a simulation tool. The user specifies market primitives and functions for drawing from Berry (1994) type structural errors, and is returned the firms expected variable profits (average over the simulation draws). 
 
 	
