@@ -44,7 +44,7 @@ ldmkt_Ds_fun <- function(){
 #'
 #' @examples #NA
 ldmkt_firm_profits <- function(){
-  var_profs <- vecotr('numeric', length(private$num_firms))
+  var_profs <- vector('numeric', length(private$num_firms))
   for(j in 1:private$num_firms){
     f <- private$firm_names[j]
     Mkt <- private$Market
