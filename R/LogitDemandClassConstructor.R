@@ -70,7 +70,7 @@ ldmkt_construct <- function(Firms,
                                'Markup' = Markup)
 
   private$ujs <- Delta + Struct_error
-  private$cjs <- Mc_error + Mc_fixed
+  private$cjs <- exp(Mc_error)*Mc_fixed
   private$Jt <- Jt
   private$Market_size <- Market_Size
   private$Deriv_price <- Deriv_price
