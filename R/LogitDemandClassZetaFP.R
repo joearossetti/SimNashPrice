@@ -21,7 +21,8 @@ ldmkt_zeta_fixed_point <- function(tol){
     ## Update the price from the last iteration using the fixed point equation
 
 
-    Lambda_inv <- solve(private$Ds[['Lambda_p']])
+    Lambda_inv <- diag(1/diag(private$Ds[['Lambda_p']]))
+
     private$Market[['Price']] <- Lambda_inv %*% as.numeric(-private$Market[['Share']]) -
       Lambda_inv %*% private$Ds[['Gamma_p']] %*% (as.numeric(private$Market[['Price']]) - MC) + MC
 
