@@ -37,9 +37,9 @@ my_ldm_objR6$getDs()
 my_ldm_objR6$Ds_fun()
 my_ldm_objR6$getDs()
 
-my_ldm_objR6_2 <- Logit_Demand_Market$new(my_mkt_prods$firm, my_mkt_prods$j, my_mkt_prods$delta, Mc_fixed = my_mkt_prods$mc, Struct_error = Xi, U_out_opt = 1, Deriv_price = alpha)
-my_ldm_objR6_2$getMarket()
-my_ldm_objsR6 <- purrr::map(1:500, .f=~my_ldm_objR6_2$clone)
+#my_ldm_objR6_2 <- Logit_Demand_Market$new(my_mkt_prods$firm, my_mkt_prods$j, my_mkt_prods$delta, Mc_fixed = my_mkt_prods$mc, Struct_error = Xi, U_out_opt = 1, Deriv_price = alpha)
+#my_ldm_objR6_2$getMarket()
+#my_ldm_objsR6 <- purrr::map(1:500, .f=~my_ldm_objR6_2$clone)
 
 my_ldm_objR6$zeta_fixed_point(1e-6)
 

@@ -34,6 +34,10 @@ ldmkt_zeta_fixed_point <- function(tol){
     ## should the loop stop? have we converged?
     foc <- t(private$Ds[['D_p']]) %*% (as.numeric(private$Market[['Price']]) - MC) + as.numeric(private$Market[['Share']])
     error <- max(abs(foc)) # check for whether the first order condition is 0 for this iteration
+    if(is.na(error)){
+     print('error is na')
+     print(foc)
+    }
     if(error < tol){
       break
     }
