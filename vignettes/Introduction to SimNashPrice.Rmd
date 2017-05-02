@@ -6,9 +6,61 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to SimNashPrice}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: SimNashPrice.bib
 ---
 
 
+Currently, one of the most important methodologies in studying differentiated products industries involves estimating the demand and variable cost curves for and industry using the methods developed in [@Berry1994] and [@BLP1995]. The goal is usually to take these curves and simulate counterfactuals e.g. prices after a merger. This package, SimNashPrice, is designed to assist with this simulation process. 
+
+The path from the data to the counterfactual has three steps. First, data on market shares, prices and product characteristics are used to estimate the demand curve. Second, assuming Firm's choose prices in order to maximize profits the demand estimates can be used to recover the variable costs. Finally, the researcher can use the demand and variable costs to simulate a wide array of counterfactuals. The key step in this simulation is solving for new prices. This is not a simple optimization problem since firm's are modeled as choosing prices in a game, and playing a Nash equilibrium (N.E.). [@MorrowSkerlos] have developed a reliable algorithm for solving for these prices, and I have implented their algorithm in this package to make it available to other researchers.
+
+While the package focuses on computing N.E. prices, it can also be used to recover variable profits/markups/costs from demand estimates and data.  Further simulating N.E. prices is not just useful for counterfactuals: it is also important for generating artificial data sets that can be used to test proposed estimation routines and software.
+
+I'll start out this vignette by laying out the mathematical model of consumer and firm behavior that are being used, then I'll explain the algorithm for computing N.E. prices given by [@MorrowSkerlos]. Finally, I will go through some examples of how to put the package to use. I will generate a artificial data set for testing estimation routines, and show a counterfacual simulation of a merger.
+
+## Modeling Framework: demand and variable cost
+
+The model starts with a specification for consumer utility:
+$$ u_{ijt} = (\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt} + \epsilon_{ijt}   $$
+Consumer $i$ gets utility $u_{ijt}$ from consumer product $j$ in market-time observation $t$. His utility is a function of the price $p_{jt}$, and consumer $i$ recieve disutility $\alpha+\alpha_i$ from the price. The consumer also gets a fixed payoff from consuming the good $\delta_{jt}$ that is shared across consumers and a function of product and market-time (henceforth period) specific variables observed by the econometrician, and there is another fixed payoff that is not observable by the econometrician given by $\xi_{jt}$ which will be referred to as the structural error of demand shock. Finally there are two payoffs that are idiosyncratic to the consumer. First, is a payoff for consuming product $j$ in period $t$ that is a function of observable variables, but is consumer specific. Second, is an idiosyncratic payoff that is unobserved and henceforth will be assumed to follow a type-1 extreme value distribution and be i.i.d. across products and periods.
+
+Because of the type-1 extreme value distribution the probability of consumer $i$ purchasing good $j$ in period $t$ as a function of the price will be:
+
+$$s_{ijt} = \frac{e^{(\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt}}}{\sum_{k=0}^{J_{t}}e^{(\alpha + \alpha_i)p_{kt} +  \delta_{kt} + \xi_{kt} + \mu_{ikt}}} $$
+
+The researcher usually considers one products to be the 'outside option' in other words the consumer may choose not to spend money on the good in question and instead purchase other types of goods. Label this product $0$ and let its utility be $u_{0}$. For estimation purposes this must be normalized with $u_{0}=0$, and I will follow that convention--but the reader should note that for the purposes of simulating a theortical situation they could take any normalization. (The default behavior of SimNashPrice is to take the $0$ normalization). Under that normalization the expresion above simplifies to:
+$$s_{ijt} = \frac{e^{(\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt}}}{  1+\sum_{k=1}^{J_{t}}e^{(\alpha + \alpha_i)p_{kt} +  \delta_{kt} + \xi_{kt} + \mu_{ikt}}} $$
+The above expression gives the individual specific choice probabilities in the random coefficients logit model.  This model allows for a great deal of heterogeneity accross consumers via $\alpha_{i}$ and $\mu_{ijt}$. This flexibility allows it to realistically model substitution patterns. If $\alpha_{i} = 0$ and $\mu_{ijt} = 0$ then the model is referred to as the simple logit model. SimNashPrice allows the researcher to use either specification, but in this vignette I will describe only the more realistic random coefficients specification. 
+
+I will use the following convention for denoting vectors: the vector of all of the consumer's choice probabilities is $s_{jt}$ ommitting the index of the variable that indexes the new vector.  Therefore I will write $F(\mu_{it})$ to denote the distribution of across consumers of idiosyncratic utility from all of the $J_{t}$ products available in period $t$. Also let $F(\alpha_i)$ be the distribution of $\alpha_{i}$ in the population.  Using these definitions we can integrate over the population of consumers to get the expected market share of each product in a given period:
+$$s_{jt} = \int \int s_{ijt}\, dF(\mu_t)\,dF(\alpha_i)$$
+There is much to say about estimation of this type of model see [@BLP1995, @Berry1994, @Nevo2001], but the emphasis here is just on simulating it and with a specification for the distributions in the above expression it is easy to use a simulation procedure to approximate $s_{jt}$. 
+
+$s_{jt}$ is referred to as the market share of product $j$, and written as a function of the prices of all of the products $s_{jt}(p_t)$  can be thought of as a demand curve.  Firm's facing this demand curve choose prices to maximize profits, but because profits depend on the choices of other firms must choose prices subject to the constraint that other firm's prices are also maximizing profits conditional on their own choice. To make this formal index firms by $f$ and denote the prices and shares of firm $f$ as the vectors $p_{t}^{f}$ and $s_{t}^{f}$ and the prices and shares of all other firms as $p_{t}^{-f}$ and $s_{t}^{-f}$.  Let $p_{t}^{-f}(p_{t}^{f})$ denote the other firm's best response (profit maximizing response) to firm $f$'s prices.
+
+The firm faces the following profit maximization problem in N.E.:
+
+$$ max_{p_{t}^{f}}\  s_{t}^{f}(p_{t}^{f},\, p_{t}^{-f})^{T}(p_{t}^{f}-c_{t}^{f})M_t \\ s.t.\  p_{t}^{-f} = p_{t}^{-f}(p_{t}^{f})$$
+With $c_{t}^{f}$ being firm $f$ per unit cost of producing and selling products, and $M_t$ is the size of the market: the number of possible purchases in the market in period $t$.  The market share is then the percentage of the possible sales that go to each product.
+
+The neccesary condition for profit maximization, referred to in economics as the first order condition (f.o.c.) is:
+$$  s_{t}^{f}(p_{t}^{f},\, p_{t}^{-f})^T + D_{p_{t}^{f}} s_{t}^{f}(p_{t}^{f}-c_{t}^{f}) = 0 $$
+$D_{p_{t}^{f}} s_{t}^{f}$ is the jacobian of the firms market shares with respect to its own prices. This is a dense matrix with entries: $(D_{p_{t}^{f}} s_{t}^{f})_{pq} = \frac{\partial s_{pt}^{f} }{ \partial p_{qt}^{f} }$. The constraint in the profit maximization problem requires that this condition hold simulataneously for all of the firms. Thus we can write a system of neccesary conditions (stack all firms on top of eachother):
+$$ s_{t}(p_{t})^T + D_{p_{t}} s_{t} (p_{t}-c_{t}) = 0$$ 
+The matrix $D_{p_{t}} s_{t}$ is referred to by [@MorrowSkerlos] as the 'intra-firm' jacobian of market shares. This matrix has entries:
+$$ (D_{p_{t}} s_{t})_{pq} = \frac{\partial s_{pt}^{f} }{ \partial p_{qt}^{f} } 1[product\ p\ and\ q\ owned\ by\ the\ same\ firm] $$
+Another way to define this matrix whenever it is formed from stacking the firm's f.o.c.'s as $D_{p_{t}^{f}} s_{t}^{f} \otimes I_{F}$, where $I_F$ is the $F$x$F$ identity matrix and $F$ is the number of firms.
+
+The primary goal of this package is to provide an easy to use tool for solving the system for f.o.c.'s, becuase this is a neccesary step for any counterfactual simulation or other type of simulation.  Solving this non-linear fixed point problem is non-trivial. [@MorrowSkerlos] show that many common/naive approaches will fail when the search cannot be started close to the solution. In the next section I will explain their novel approach to solving this problem.
+
+## Fixed Point Computation of N.E. Prices
+
+## Artifical Data Set: tidy demand data
+
+## Simulating a Merger
+
+
+## References
