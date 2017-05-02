@@ -15,7 +15,9 @@ LazyData: true
 URL: https://github.com/joearossetti/SimNashPrice
 RoxygenNote: 5.0.1
 Imports:
-    R6
+    R6,
+    Rcpp,
+    RcppArmadillo
 Collate:
     'LogitDemandClassConstructor.R'
     'LogitDemandClassExpProf.R'
@@ -23,3 +25,12 @@ Collate:
     'LogitDemandClassMethods.R'
     'OwnershipMatrix.R'
     'LogitDemandClassHeader.R'
+    'RcppExports.R'
+    'SimNashPrice.R'
+    'rLogitDemandClassConstructor.R'
+    'rLogitDemandClassGetters.R'
+    'rLogitDemandClassMethods.R'
+    'rLogitDemandClassHeader.R'
+LinkingTo: 
+  Rcpp,
+  RcppArmadillo
