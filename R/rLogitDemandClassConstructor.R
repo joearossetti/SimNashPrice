@@ -37,6 +37,10 @@ rldmkt_construct <- function(Firms,
                             Market_Size=1){
 
   Jt <- length(Firms)
+  if(Jt==0){
+    stop('You must have at least 1 product')
+  }
+
   if(is.null(Prod_ids)){
     Prod_ids <- rep(0, Jt)
   }

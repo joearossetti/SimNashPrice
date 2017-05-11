@@ -21,7 +21,7 @@ ldmkt_zeta_fixed_point <- function(tol){
     ## Update the price from the last iteration using the fixed point equation
 
 
-    Lambda_inv <- diag(1/diag(private$Ds[['Lambda_p']]))
+    Lambda_inv <- diag(1/diag(private$Ds[['Lambda_p']]), nrow = Jt, ncol = Jt)
 
     private$Market[['Price']] <- Lambda_inv %*% as.numeric(-private$Market[['Share']]) -
       Lambda_inv %*% private$Ds[['Gamma_p']] %*% (as.numeric(private$Market[['Price']]) - MC) + MC
@@ -35,8 +35,10 @@ ldmkt_zeta_fixed_point <- function(tol){
     foc <- t(private$Ds[['D_p']]) %*% (as.numeric(private$Market[['Price']]) - MC) + as.numeric(private$Market[['Share']])
     error <- max(abs(foc)) # check for whether the first order condition is 0 for this iteration
     if(is.na(error)){
-     print('error is na')
-     print(foc)
+     stop('error is na')
+    }
+    if(is.nan(error)){
+      stop('error is NaN')
     }
     if(error < tol){
       break
