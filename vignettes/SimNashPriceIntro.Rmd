@@ -2,13 +2,7 @@
 title: "Introduction to SimNashPrice"
 author: "Joseph Rossetti"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette:
-    fig_caption: yes
-vignette: >
-  %\VignetteIndexEntry{Introduction to SimNashPrice}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 bibliography: SimNashPrice.bib
 ---
 
@@ -435,8 +429,16 @@ Markets <- tibble(period = 1:T_, market_obj=rerun(.n=T_, my_market_maker()))
 Storing objects in this way allows me to use `dplyr`/`purrr` to work with the objects. For example I want my data set to include shares and prices so I call the `zeta_fixed_point` method using `purrr::map`:
 ```{r}
 Markets <- Markets %>% mutate(
-  market_solved = map(market_obj, .f=~.x$zeta_fixed_point(tol=1e-6))
+  market_solved = map(market_obj, safely(.f=~.x$zeta_fixed_point(tol=1e-6)))
 )
+
+Markets <- Markets %>% mutate(
+  error = map_lgl(market_solved, .f=~is.null(.x$error))
+)
+
+Markets %>% dplyr::filter(error==FALSE)
+#print(Markets)
+#print(Markets$market_obj[[1]]$getMarket())
 ```
 The tibble print method thinks that the `rldmkt` objects are S3 objects, but they are actually `R6` objects.  This does not effect the underlying data or our ability to compute on it.
 
@@ -451,15 +453,11 @@ demand_data <- Markets %>% mutate(
     market_dfs = map(market_obj, .f=~.x$getMarket()%>%select(Prod_ids, Firms, Price, Share))
   ) %>% 
   select(period, market_dfs) %>%
-  unnest() %>%
-  left_join(XP, by=c("Prod_ids" = "prodname"))
+  unnest()
 
 print(demand_data)
 ```
 
-```{r, echo=FALSE, include=FALSE}
-save(demand_data, file='demand_data.RData')
-```
 
 
 
