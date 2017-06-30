@@ -3,7 +3,7 @@ Type: Package
 Title: Simulate Bertrand Nash Prices
 Version: 0.0.1.000
 Author: Joseph Rossetti
-Maintainer: Joseph Rossett <rossetti.28@osu.edu>
+Maintainer: Joseph Rossetti <rossetti.28@osu.edu>
 Description: This pacakge takes as input results from a BLP style demand
     estimation. It will compute the so called Bertrand Nash Prices, the resulting
     market shares, and profits. It also has a simulation routine for drawing from

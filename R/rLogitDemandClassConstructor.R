@@ -79,7 +79,7 @@ rldmkt_construct <- function(Firms,
   private$aijs <- Aij_mat
   private$ujs <- Delta + Struct_error
   private$uijs <- private$ujs + private$muijs
-  private$cjs <- exp(Mc_error)*Mc_fixed
+  private$cjs <- exp(Mc_error+Mc_fixed)
   private$Jt <- Jt
   private$Market_size <- Market_Size
   private$Alpha <- Alpha

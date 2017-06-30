@@ -13,13 +13,13 @@
 #' @export
 #'
 #' @examples #NA
-ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol){
+ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_iter){
   var_prof_mat <- matrix(nrow = draws, ncol = private$num_firms)
   for(i in 1:draws){
     private$ujs <- private$Market[['Delta']] + struct_error_fun(private$Jt)
     private$cjs <- private$Market[['Mc_fixed']]*exp(mc_error_fun(private$Jt))
 
-    self$zeta_fixed_point(tol=tol)
+    self$zeta_fixed_point(tol=tol, max_iter=Max_iter)
 
     for(j in 1:private$num_firms){
       f <- private$firm_names[j]

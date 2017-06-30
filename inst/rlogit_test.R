@@ -1,3 +1,4 @@
+library(SimNashPrice)
 set.seed(1234)
 
 ## Parameters of demand function
@@ -29,7 +30,7 @@ my_muis <- as.matrix(XP[,1:2]) %*% t(beta_is)
 my_alphais <- t(rnorm(500, 0, 1))
 
 my_mkt_prods <- rbind(my_prod_table[which(a1==1),], my_prod_table[which(a2==1),])
-my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,0,0))
+my_mkt_prods <- data.frame(my_mkt_prods, firm = c(1,1,1,1,1))
 
 my_mkt_muis <- my_muis[my_mkt_prods$j,]
 
@@ -79,3 +80,8 @@ my_rldmkt_obj$getMarket()[['Share']]
 
 my_rldmkt_obj$Ds_fun()
 my_rldmkt_obj$getDs()
+
+my_rldmkt_obj$zeta_fixed_point(tol = 1e-8, max_iter = 1e5)
+
+my_rldmkt_obj$markups()
+my_rldmkt_obj$getMarket()

@@ -13,29 +13,29 @@ bibliography: SimNashPrice.bib
 ---
 
 
-Currently, one of the most important methodologies in studying differentiated products industries involves estimating the demand and variable cost curves for and industry using the methods developed in [@Berry1994] and [@BLP1995]. The goal is usually to take these curves and simulate counterfactuals e.g. prices after a merger. This package, SimNashPrice, is designed to assist with this simulation process. 
+Currently, one of the most important methodologies in studying differentiated products industries involves estimating the demand and variable cost curves for and industry using the methods developed in [@Berry1994] and [@BLP1995]. The goal is usually to take these curves and simulate counter-factuals e.g. prices after a merger. This package, SimNashPrice, is designed to assist with this simulation process. 
 
-The path from the data to the counterfactual has three steps. First, data on market shares, prices and product characteristics are used to estimate the demand curve. Second, assuming Firm's choose prices in order to maximize profits the demand estimates can be used to recover the variable costs. Finally, the researcher can use the demand and variable costs to simulate a wide array of counterfactuals. The key step in this simulation is solving for new prices. This is not a simple optimization problem since firm's are modeled as choosing prices in a game, and playing a Nash equilibrium (N.E.). [@MorrowSkerlos] have developed a reliable algorithm for solving for these prices, and I have implented their algorithm in this package to make it available to other researchers.
+The path from the data to the counter-factual has three steps. First, data on market shares, prices and product characteristics are used to estimate the demand curve. Second, assuming Firm's choose prices in order to maximize profits the demand estimates can be used to recover the variable costs. Finally, the researcher can use the demand and variable costs to simulate a wide array of counter-factuals. The key step in this simulation is solving for new prices. This is not a simple optimization problem since firm's are modeled as choosing prices in a game, and playing a Nash equilibrium (N.E.). [@MorrowSkerlos] have developed a reliable algorithm for solving for these prices, and I have implanted their algorithm in this package to make it available to other researchers.
 
-While the package focuses on computing N.E. prices, it can also be used to recover variable profits/markups/costs from demand estimates and data.  Further simulating N.E. prices is not just useful for counterfactuals: it is also important for generating artificial data sets that can be used to test proposed estimation routines and software.
+While the package focuses on computing N.E. prices, it can also be used to recover variable profits/markups/costs from demand estimates and data.  Further simulating N.E. prices is not just useful for counter-factuals: it is also important for generating artificial data sets that can be used to test proposed estimation routines and software.
 
-I'll start out this vignette by laying out the mathematical model of consumer and firm behavior that are being used, then I'll explain the algorithm for computing N.E. prices given by [@MorrowSkerlos]. Finally, I will go through some examples of how to put the package to use. I will generate a artificial data set for testing estimation routines, and show a counterfacual simulation of a merger.
+I'll start out this vignette by laying out the mathematical model of consumer and firm behavior that are being used, then I'll explain the algorithm for computing N.E. prices given by [@MorrowSkerlos]. Finally, I will go through some examples of how to put the package to use. I will generate a artificial data set for testing estimation routines, and show a counter-factual simulation of a merger.
 
 ## Modeling Framework: demand and variable cost
 
 The model starts with a specification for consumer utility:
 $$ u_{ijt} = (\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt} + \epsilon_{ijt}   $$
-Consumer $i$ gets utility $u_{ijt}$ from consumer product $j$ in market-time observation $t$. His utility is a function of the price $p_{jt}$, and consumer $i$ recieve disutility $\alpha+\alpha_i$ from the price. The consumer also gets a fixed payoff from consuming the good $\delta_{jt}$ that is shared across consumers and a function of product and market-time (henceforth period) specific variables observed by the econometrician, and there is another fixed payoff that is not observable by the econometrician given by $\xi_{jt}$ which will be referred to as the structural error of demand shock. Finally there are two payoffs that are idiosyncratic to the consumer. First, is a payoff for consuming product $j$ in period $t$ that is a function of observable variables, but is consumer specific. Second, is an idiosyncratic payoff that is unobserved and henceforth will be assumed to follow a type-1 extreme value distribution and be i.i.d. across products and periods.
+Consumer $i$ gets utility $u_{ijt}$ from consumer product $j$ in market-time observation $t$. His utility is a function of the price $p_{jt}$, and consumer $i$ receive dis-utility $\alpha+\alpha_i$ from the price. The consumer also gets a fixed payoff from consuming the good $\delta_{jt}$ that is shared across consumers and a function of product and market-time (henceforth period) specific variables observed by the econometric, and there is another fixed payoff that is not observable by the econometrician given by $\xi_{jt}$ which will be referred to as the structural error of demand shock. Finally there are two payoffs that are idiosyncratic to the consumer. First, is a payoff for consuming product $j$ in period $t$ that is a function of observable variables, but is consumer specific. Second, is an idiosyncratic payoff that is unobserved and henceforth will be assumed to follow a type-1 extreme value distribution and be i.i.d. across products and periods.
 
 Because of the type-1 extreme value distribution the probability of consumer $i$ purchasing good $j$ in period $t$ as a function of the price will be:
 
 $$s_{ijt} = \frac{e^{(\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt}}}{\sum_{k=0}^{J_{t}}e^{(\alpha + \alpha_i)p_{kt} +  \delta_{kt} + \xi_{kt} + \mu_{ikt}}} $$
 
-The researcher usually considers one products to be the 'outside option' in other words the consumer may choose not to spend money on the good in question and instead purchase other types of goods. Label this product $0$ and let its utility be $u_{0}$. For estimation purposes this must be normalized with $u_{0}=0$, and I will follow that convention--but the reader should note that for the purposes of simulating a theortical situation they could take any normalization. (The default behavior of SimNashPrice is to take the $0$ normalization). Under that normalization the expresion above simplifies to:
+The researcher usually considers one products to be the 'outside option' in other words the consumer may choose not to spend money on the good in question and instead purchase other types of goods. Label this product $0$ and let its utility be $u_{0}$. For estimation purposes this must be normalized with $u_{0}=0$, and I will follow that convention--but the reader should note that for the purposes of simulating a theoretical situation they could take any normalization. (The default behavior of SimNashPrice is to take the $0$ normalization). Under that normalization the expression above simplifies to:
 $$s_{ijt} = \frac{e^{(\alpha + \alpha_i)p_{jt} +  \delta_{jt} + \xi_{jt} + \mu_{ijt}}}{  1+\sum_{k=1}^{J_{t}}e^{(\alpha + \alpha_i)p_{kt} +  \delta_{kt} + \xi_{kt} + \mu_{ikt}}} $$
-The above expression gives the individual specific choice probabilities in the random coefficients logit model.  This model allows for a great deal of heterogeneity accross consumers via $\alpha_{i}$ and $\mu_{ijt}$. This flexibility allows it to realistically model substitution patterns. If $\alpha_{i} = 0$ and $\mu_{ijt} = 0$ then the model is referred to as the simple logit model. SimNashPrice allows the researcher to use either specification, but in this vignette I will describe only the more realistic random coefficients specification. 
+The above expression gives the individual specific choice probabilities in the random coefficients logit model.  This model allows for a great deal of heterogeneity across consumers via $\alpha_{i}$ and $\mu_{ijt}$. This flexibility allows it to realistically model substitution patterns. If $\alpha_{i} = 0$ and $\mu_{ijt} = 0$ then the model is referred to as the simple logit model. SimNashPrice allows the researcher to use either specification, but in this vignette I will describe only the more realistic random coefficients specification. 
 
-I will use the following convention for denoting vectors: the vector of all of the consumer's choice probabilities is $s_{jt}$ ommitting the index of the variable that indexes the new vector.  Therefore I will write $F(\mu_{it})$ to denote the distribution of across consumers of idiosyncratic utility from all of the $J_{t}$ products available in period $t$. Also let $F(\alpha_i)$ be the distribution of $\alpha_{i}$ in the population.  Using these definitions we can integrate over the population of consumers to get the expected market share of each product in a given period:
+I will use the following convention for denoting vectors: the vector of all of the consumer's choice probabilities is $s_{jt}$ omitting the index of the variable that indexes the new vector.  Therefore I will write $F(\mu_{it})$ to denote the distribution of across consumers of idiosyncratic utility from all of the $J_{t}$ products available in period $t$. Also let $F(\alpha_i)$ be the distribution of $\alpha_{i}$ in the population.  Using these definitions we can integrate over the population of consumers to get the expected market share of each product in a given period:
 $$s_{jt} = \int \int s_{ijt}\, dF(\mu_t)\,dF(\alpha_i)$$
 There is much to say about estimation of this type of model see [@BLP1995, @Berry1994, @Nevo2001], but the emphasis here is just on simulating it and with a specification for the distributions in the above expression it is easy to use a simulation procedure to approximate $s_{jt}$. 
 
@@ -48,17 +48,17 @@ With $c_{t}^{f}$ being firm $f$ per unit cost of producing and selling products,
 
 SimNashPrice assumes the marginal costs are of the following form:
 $$ c_{tj} = exp(\nu_{jt} + \omega_{jt}) $$
-Cost like utility is decomposed into $\nu_{jt}$ a part that depends on observable variables, and $\omega_{jt}$ a part that is unobservable to the econometrician.
+Cost like utility is decomposed into $\nu_{jt}$, a part that depends on observable variables, and $\omega_{jt}$ a part that is unobservable to the econometrician.
 
-The neccesary condition for profit maximization, referred to in economics as the first order condition (f.o.c.) is:
+The necessary condition for profit maximization, referred to in economics as the first order condition (f.o.c.) is:
 $$  s_{t}^{f}(p_{t}^{f},\, p_{t}^{-f})^T + D_{p_{t}^{f}} s_{t}^{f}(p_{t}^{f}-c_{t}^{f}) = 0 $$
-$D_{p_{t}^{f}} s_{t}^{f}$ is the jacobian of the firms market shares with respect to its own prices. This is a dense matrix with entries: $(D_{p_{t}^{f}} s_{t}^{f})_{nh} = \frac{\partial s_{ht}^{f} }{ \partial p_{ht}^{f} }$. The constraint in the profit maximization problem requires that this condition hold simulataneously for all of the firms. Thus we can write a system of neccesary conditions (stack all firms on top of eachother):
+$D_{p_{t}^{f}} s_{t}^{f}$ is the jacobian of the firms market shares with respect to its own prices. This is a dense matrix with entries: $(D_{p_{t}^{f}} s_{t}^{f})_{nh} = \frac{\partial s_{ht}^{f} }{ \partial p_{ht}^{f} }$. The constraint in the profit maximization problem requires that this condition hold simultaneously for all of the firms. Thus we can write a system of necessary conditions (stacking all firms on top of each other):
 $$ s_{t}(p_{t})^T + D_{p_{t}} s_{t} (p_{t}-c_{t}) = 0$$ 
 The matrix $D_{p_{t}} s_{t}$ is referred to by [@MorrowSkerlos] as the 'intra-firm' jacobian of market shares. This matrix has entries:
 $$ (D_{p_{t}} s_{t})_{nh} = \frac{\partial s_{nt}^{f} }{ \partial p_{ht}^{f} } 1[product\ p\ and\ q\ owned\ by\ the\ same\ firm] $$
-Another way to define this matrix whenever it is formed from stacking the firm's f.o.c.'s as $D_{p_{t}^{f}} s_{t}^{f} \otimes I_{F}$, where $I_F$ is the $F$x$F$ identity matrix and $F$ is the number of firms.
+Another way to define this matrix whenever it is formed from stacking the firm's f.o.c.'s as $D_{p_{t}^{f}} s_{t}^{f} \otimes I_{F}$, where $I_F$ is the $F$x$F$ identity matrix and $F$ is the number of firms. The system of first order conditions are necessary conditions for firms to be choosing prices that form a N.E..
 
-The primary goal of this package is to provide an easy to use tool for solving the system for f.o.c.'s, becuase this is a neccesary step for any counterfactual simulation or other type of simulation.  Solving this non-linear fixed point problem is non-trivial. [@MorrowSkerlos] show that many common/naive approaches will fail when the search cannot be started close to the solution. In the next section I will explain their novel approach to solving this problem.
+The primary goal of this package is to provide an easy to use tool for solving this system of f.o.c.'s, because this is a necessary step for any counter-factual simulation or other type of simulation.  Solving this non-linear fixed point problem is non-trivial. [@MorrowSkerlos] show that many common/naive approaches will fail when the search cannot be started close to the solution. In the next section I will explain their novel approach to solving this problem.
 
 ## Fixed Point Computation of N.E. Prices
 
@@ -79,13 +79,13 @@ $$p_{t}  = \Lambda (s_{t})^{-1}( \Gamma (s_{t}) (p_{t}-c_{t}) - s_{t}(p_{t})^T) 
 The last equation gives a fixed point problem for prices. [@MorrowSkerlos] call this fixed point the 'zeta fixed point', and define:
 $$\zeta(p_t) = \Lambda (s_{t})^{-1}( \Gamma (s_{t}) (p_{t}-c_{t}) - s_{t}(p_{t})^T) $$
 
- Other approaches in the literature to solving for prices might be to solve the system of f.o.c.'s directly using a root-solver (gradient search) or by iterating on the f.o.c. directly (a fixed point using the matrix $D_{p_{t}} s_{t}$.  [@MorrowSkerlos] show in simulations that these methods are not reliable when the researcher does not have a good a priori guess for equilibrium prices.  My own limited experience agrees.  In particular my research involves changing the set of available products. The usual guess for computing counterfactual prices is prices is the observed prices, but with new products there are no observed prices.  Iterating on this fixed point requires no numerical optimization nor linear algebra. The matrix $\Lambda(s_t)$ is diagonal so its inverse can be found by straightforward arithmetic. In practice the zeta fixed point is fast because of this simplicity.  It is important to point out that this fixed point is only available for mixed logit models (random coefficients logit, simple logit, and nested logit).
+ Other approaches in the literature to solving for prices might be to solve the system of f.o.c.'s directly using a root-solver (gradient search) or by iterating on the f.o.c. directly (a fixed point using the matrix $D_{p_{t}} s_{t}$.  [@MorrowSkerlos] show in simulations that these methods are not reliable when the researcher does not have a good a priori guess for equilibrium prices.  My own limited experience agrees.  In particular my research involves changing the set of available products. The usual guess for computing counter-factual prices are the observed prices, but with new products there are no observed prices for those products in that market observation.  Iterating on the zeta fixed point requires no numerical optimization nor linear algebra. The matrix $\Lambda(s_t)$ is diagonal so its inverse can be found by straightforward arithmetic. In practice the zeta fixed point is fast because of this simplicity.  It is important to point out that this fixed point is only available for mixed logit models (random coefficients logit, simple logit, and nested logit).
  
  In the next section I will show an example of how SimNashPrice implements the zeta fixed point, and I will show several other features of the package that hopefully make it helpful for researchers. 
 
 ## Artifical Data Set: tidy demand data
 
-I divide this section into two parts: first, I will set up a single market and show how the class is structured and how the basic computations work; second, I show how to loop over the process of market creation to generate an artificial data set and then tidy that data set into something that could be used for estimation. 
+I divide this section into two parts: first, I will set up a single market and show how the class that models the markets are structured and how the basic computations work; second, I show how to loop over the process of market creation to generate an artificial data set and then tidy that data set into something that could be used for estimation. 
 
 ### Creating the first market
 
@@ -97,14 +97,14 @@ library(SimNashPrice)
 set.seed(1234)
 ```
 
-Next set some parameters. In general setting up many of these parameters will not be neccesary when using the package with data, but for generating data there will be more setup work.  
+The next step is to set up some parameters for the market since I am simulating a market from scratch.  Using the package with data and estimated demand curves does not require all of this set-up--the interested reader should skip to the final section on simulating a merger to see the package used in this way.
 
 In this example products will have two observable characteristics upon which $\delta_{jt}$, $\mu_{ijt}$ and $\nu_{jt}$ will depend. `beta` will determine how the consumer's utility depends on the product characteristics, and `gamma` will determine how the variable cost will depend on the product characteristics.
 
 ```{r}
-alpha <- 4 # fixed part of price coeff
-beta <- c(-5, -4) # consumer utility from product chars
-gamma <- c(1, 0.5) # variable cost from product chars
+alpha <- 5 # fixed part of price coeff (must be positive)
+beta <- c(-3, -1) # consumer utility from product chars
+gamma <- c(1, 0.5)/10 # variable cost from product chars
 ```
 
 Each product characteristic will have two levels. There will be 4 potential products--every combination of two binary characteristics
@@ -154,7 +154,7 @@ First, I draw $\xi_jt$ and $\omega_jt$ from standard normal distributions (there
 
 ```{r}
 Xi <- rnorm(5, 0, 1)
-Omega <- rnorm(5, 0, 1)
+Omega <- rnorm(5, 0, 1)/100
 ```
 
 SimNashPrice handles the random coefficients by taking as inputs matrices of draws from the distributions $F(\mu_{it})$ and $F(\alpha_i)$.  This allows the researcher to choose any specification of distributions and draw from it using any simulation method. It also makes most of the computations within SimNashPrice reduce to linear algebra and avoids random number generation within the computations.
@@ -182,7 +182,7 @@ dim(my_muis)
 print(my_muis[1:4,1:4])
 ```
 
-Each collumn is a vector $\mu_{it}$, and each row corresponds to a product. Since not every product is offered I select the rows that correspond to the rows of `my_mkt_prods`:
+Each column is a vector $\mu_{it}$, and each row corresponds to a product. Since not every product is offered I select the rows that correspond to the rows of `my_mkt_prods`:
 
 ```{r}
 my_mkt_muis <- my_muis[my_mkt_prods$j,]
@@ -206,7 +206,7 @@ my_rldmkt_obj <- rLogit_Demand_Market$new(
   ) 
 ```
 
-`rldmkt` is a R6 class [@R6].  This class system allows pass by reference, and is higher performance than R's built in class system with reference semantics RC. Pass by reference is important for performance when doing object oriented programming in R. R by defualt copies on modification, which means the standard method as in S3 or S4 of passing objects to generic functions and returning the object with a modification (or in a new form) generally ends up creating lots of copies of the object during evaluation. In this case changing from S3 to R6 resulted in about a 4 times speed up of my code.
+`rldmkt` is a R6 class [@R6] and abbreviation stands for "random coefficient logit demand market". There is also a "logit demand market" class called `ldmkt`.  The R6 class system allows pass by reference, and is higher performance than R's built in class system with reference semantics: RC. Pass by reference is important for performance when doing object oriented programming in R. R by default copies on modification, which means the standard objected oriented methodology in R (as in S3 or S4) of passing objects to generic functions and returning the object with a modification (or in a new form) generally ends up creating lots of copies of the object during evaluation. In this case changing from S3 to R6 resulted in about a 4 times speed up of my code.
 
 There are several get methods provided with the form `getFoo`. The main way that SimNashPrice represents a market is through the private `Market` field.  This data attribute is a data.frame similar to my_mkt_prods, lets take a look:
 
@@ -214,12 +214,13 @@ There are several get methods provided with the form `getFoo`. The main way that
 my_rldmkt_obj$getMarket()
 ```
 
-With each row representing a product this data.frame holds all of the product specific information in an easy to read format. Notice that Price, Share, and Markup all default to 0. Actually these could have been set to anything using the constructor. When the methods that compute these are called these fields will be filled in with shares, prices, and markups computed based on our specification of the primitives: utility and variable cost. It is equally possible to use the package to compute variable costs and markups from observed prices and shares by 'inverting' the firms' f.o.c's.  I will cover this second process in the next example that covers simulating counterfactuals.
+With each row representing a product this data.frame holds all of the product specific information in an easy to read format. Notice that Price, Share, and Markup all default to 0. Actually these could have been set to anything using the constructor. When the methods that compute these quantities are called these fields will be filled in with shares, prices, and markups computed based on our specification of the primitives: utility and variable cost. It is equally possible to use the package to compute variable costs and markups from observed prices and shares by 'inverting' the firms' f.o.c's.  I will cover this second process in the example that covers simulating counter-factuals.
 
-I think of these two uses as mappings:
+I think of these two possible uses of the package as mappings:
 $$ primitives \rightarrow zeta\ fixed\ point\ \rightarrow prices,\ shares,\ markups$$ 
 $$ prices,\ shares \rightarrow firm's\ f.o.c. \rightarrow variable\ cost$$ 
-The object oriented programming paradigm represents these mappings as attributes of the model object: objects are collections of data (like prices) and functions (called methods) like the zeta fixed point.  I think this method of representing economic models provides a useful abstraction for computing with these types of models.
+
+The object oriented programming paradigm represents these mappings as attributes of the model object: objects are collections of data (like prices) and functions (called methods) like the zeta fixed point that act on that data.  I think this method of representing economic models provides a useful abstraction for computing. 
 
 Before using the zeta fixed point to fill in the missing prices and shares, lets take a quick look at some of the other data fields of the 'rldmkt' object.
 
@@ -233,7 +234,7 @@ The fixed part of utility $(\delta_{jt} + \xi_{jt})$:
 my_rldmkt_obj$getUjs()[1:5]
 ```
 
-Total utility minus the part that is a funciton of prices $(\delta_{jt} + \xi_{jt} + \mu_{ijt})$ for each draw:
+Total utility minus the part that is a function of prices $(\delta_{jt} + \xi_{jt} + \mu_{ijt})$ for each draw:
 ```{r}
 my_rldmkt_obj$getUijs()[1:5,1:5]
 ```
@@ -243,11 +244,11 @@ The variable cost $\nu_{jt}+\omega_{jt}$:
 my_rldmkt_obj$getCjs()[1:5]
 ```
 
-Given the model primitives the shares and prices can be computed. The mapping the does this is the zeta fixed point:
+Given the model primitives the shares and prices in equilibrium can be computed. The mapping the does this is the zeta fixed point:
 
 $$\zeta(p_t) = \Lambda (s_{t})^{-1}( \Gamma (s_{t}) (p_{t}-c_{t}) - s_{t}(p_{t})^T) $$
-In order to evaluate $\zeta(\cdot)$ it will be neccesary to compute shares and the matrices $\Lambda(\cdot)$ and $\Gamma(\cdot)$.  The 'rldmkt' class has a method `share` that computes market shares:
-```{r}
+In order to evaluate $\zeta(\cdot)$ it will be necessary to compute shares and the matrices $\Lambda(\cdot)$ and $\Gamma(\cdot)$.  The 'rldmkt' class has a method `share` that computes market shares:
+```{r, eval=FALSE}
 rldmkt_share <- function(){
   Index <- private$uijs - private$Market[['Price']] %*% private$Deriv_price
   S <- exp(Index)
@@ -257,9 +258,9 @@ rldmkt_share <- function(){
   invisible(self)
 }
 ```
-I want to highlight the private field `Si` that gets computed by this method. These are the $s_{ijt}$. They are collected in a matrix with rows for products and collumns for individuals.  These shares also enter into the computation of the intra-firm jacobian. By computing these and storing them in a private field all other methods in the function can re-use these values with out computing them. In particular the method that computes the matrices that form the intra-firm jacobian will re-use these values:
+I want to highlight the private field `Si` that gets computed by this method. These are the $s_{ijt}$. They are collected in a matrix with rows for products and columns for individuals.  These shares also enter into the computation of the intra-firm jacobian. By computing these and storing them in a private field all other methods in the function can re-use these values without computing them. In particular the method that computes the matrices that form the intra-firm jacobian will re-use these values:
 
-```{r}
+```{r, eval=FALSE}
 rldmkt_Ds_fun <- function(){
   Lambda_p <- -diag(rowMeans(private$Si*as.numeric(private$Deriv_price)))
   Gamma_p <- gamma_helper(Sr = private$Si, ar=private$Deriv_price, Or=private$O)
@@ -272,7 +273,7 @@ rldmkt_Ds_fun <- function(){
 }
 ```
 
-This method calls the function `gamma_helper` which is a call to a c++ function written using Rcpp [@rcpp] and RcppArmadillo. Computing $\Gamma(\cdot)$ requires computing the matrix (something like a substitution matrix) for each individual (collumns of `Si`) and then taking the mean of corresponding entries in the list of matrices. Doing this in R would be possible, but c++ loops are fast and RcppArmadillo [@rcpparmadillo] makes linear algebra in c++ as easy as it is in R. `gamma_helper` is displayed below:
+This method calls the function `gamma_helper` which is a call to a c++ function written using Rcpp [@rcpp] and RcppArmadillo. Computing $\Gamma(\cdot)$ requires computing the matrix (something like a substitution matrix) for each individual (columns of `Si`) and then taking the mean of corresponding entries in the list of matrices. Doing this in R would be possible, but c++ loops are fast and RcppArmadillo [@rcpparmadillo] makes linear algebra in c++ as easy as it is in R. `gamma_helper` is displayed below:
 ```
 #include <RcppArmadillo.h>
 using namespace Rcpp;
@@ -300,7 +301,7 @@ NumericMatrix gamma_helper(NumericMatrix Sr, NumericVector ar, NumericMatrix Or)
 ```
 Notice that I compute `Ds` as `Lambda_p + Gamma_p` which differs from the definition of the intra firm jacobian: $D_{p_{t}} s_{t} = \Lambda (s_{t}) - \Gamma (s_{t})$.  This is because I model $\alpha+\alpha_i$ as positive so that price enters as a negative in the utility function.  Therefore there is a leading negative sign in the definition of each matrix, therefore I compute $\Lambda(\cdot)$ as  `Lambda_p <- -diag(foo)` and the negative in front of $\Gamma(\cdot)$ cancels in the formula for $D_{p_{t}} s_{t}$.
 
-All of the methods are exported as R function with the predicate `classname_` e.g. `rldmkt_`.  This appears to be the best way to document R6 objects.  So if we want to look up the method "foo" in help you search "rldmkt_foo", and if you want to call it you leave off the class name predicate: `my_obj$foo()`. Let's call the share and intra-firm jacobain methods and look at their output:
+All of the methods are exported as R function with the predicate `classname_` e.g. `rldmkt_`.  This appears to be the best way to document R6 objects.  So if we want to look up the method "foo" in help you search "rldmkt_foo", and if you want to call it you leave off the class name predicate: `my_obj$foo()`. Let's call the share and intra-firm Jacobian methods and look at their output:
 ```{r}
 my_rldmkt_obj$share()
 print(my_rldmkt_obj$getMarket())
@@ -308,149 +309,58 @@ print(my_rldmkt_obj$getMarket())
 my_rldmkt_obj$Ds_fun()
 print(my_rldmkt_obj$getDs())
 ```
-Now that these key methods have been explained the code for the zeta fixed point will make sense:
 
+The loop continues until the first order conditions are within the `tol` of 0, then the loop will stop with the `break` command. Note that the method calls the `share` and `Ds_fun` methods itself--there is no need to call these first, and since these methods have access to the private data fields by reference the prices, shares and intra-firm jacobian are updated each time these methods are called and will have the value of the last iteration when the fixed point method terminates.  Let's take a look at our model:
 ```{r}
-ldmkt_zeta_fixed_point <- function(tol){
-  Jt <- private$Jt
-  MC <- as.numeric(private$cjs)
-  self$share() # initial shares
-  self$Ds_fun() # first derivative matrix
-
-  error <- 1e6
-  while(TRUE){
-    #print(private$Ds[['Lambda_p']])
-    ## Update the price from the last iteration using the fixed point equation
-
-
-    Lambda_inv <- diag(1/diag(private$Ds[['Lambda_p']]))
-
-    private$Market[['Price']] <- Lambda_inv %*% as.numeric(-private$Market[['Share']]) -
-      Lambda_inv %*% private$Ds[['Gamma_p']] %*% (as.numeric(private$Market[['Price']]) - MC) + MC
-
-
-    ## use the new prices to calculate new shares and stuff
-    self$share()
-    self$Ds_fun() # first derivative matrix
-
-    ## should the loop stop? have we converged?
-    foc <- t(private$Ds[['D_p']]) %*% (as.numeric(private$Market[['Price']]) - MC) +    as.numeric(private$Market[['Share']])
-    error <- max(abs(foc)) # check for whether the first order condition is 0 for this iteration
-    if(is.na(error)){
-     print('error is na')
-     print(foc)
-    }
-    if(error < tol){
-      break
-    }
-  }
-
-  invisible(self)
-}
-```
-
-The function is predicated with `ldmkt_`.  This is because the zeta fixed point has the same form for both models--they only differ in how the shares and jacobian matrices are computed.  This will hold for several taks and so `rldmkt` class objects can actually share many methods with the simple logit class `ldmkt`.  I have not implemented formal inheritance yet, but plan to as soon as I have time.
-
-The loop continues until the first order conditions are within the `tol` of 0, then the loop will stop with the `break` command. Note that the method calls the `share` and `Ds_fun` methods itself--there is no need to call these first, and since the loop directly computes and the private data fields the prices, shares and intra-firm jacobian will be the ones from the last step of the fixed point when the method call ends.  Let's take a look at our model:
-```{r}
-my_rldmkt_obj$zeta_fixed_point(tol=1e-6)
+my_rldmkt_obj$zeta_fixed_point(tol=1e-6, max_iter = 1000)
 
 print(my_rldmkt_obj$getMarket()) # markup is still 0 because we have not computed it
 ```
 
 ### Generating a list of markets
 
-Now that I have computed prices and shares for one market I want to generate a sample of markets with different products. I will define a factory function that contains all of the parameter definitions I want my market simulating function to use.  This function will return a function `market_maker` that will act as a closure--capturing the parameters that were defined in the enviroment in which it was created.  As coded below my factory function does not take any arguements, but if, for example, I wanted to generate samples with several different values of `alpha` I could make it an arguement instead of a definition in the function body.  These two function wrap the code that was used above to generate the first market, but now the sets of products offered by each firm is random.
+Now that I have computed prices and shares for one market I want to generate a sample of markets with different products. I will define a factory function that contains all of the parameter definitions I want my market simulating function to use.  This function will return a function `market_maker` that will act as a closure--capturing the parameters that were defined in the environment in which it was created.  As coded below my factory function does not take any arguments, but if, for example, I wanted to generate samples with several different values of `alpha` I could make it an argument instead of a definition in the function body.  These two functions wrap the code that was used above to generate the first market, but now the sets of products offered by each firm is random.
 
 ```{r}
-market_maker_factory <- function(){
-  ## Parameters of demand function
-  alpha <- 4
-  beta <- c(-5, -4)
-  gamma <- c(1, 0.5)
-
-  ## Make a list of factor level
-  char_levels <- list(char1 = c(0,1), char2 = c(0,1))
-
-  ## Make list of all potential products
-  XP <- expand.grid(char_levels)
-  J <- dim(XP)[1]
-
-  XP <- data.frame(XP, prodname=1:J)
-
-  my_prod_table <- data.frame(j = XP$prodname, delta = (cbind(XP$char1, XP$char2) %*% beta), mc = (cbind(XP$char1, XP$char2) %*% gamma))
-
-  beta_is <- cbind(rnorm(500, 0, 1), rnorm(500, 0, 1))
-
-  my_muis <- as.matrix(XP[,1:2]) %*% t(beta_is)
-
-  my_alphais <- t(rnorm(500, 0, 1))
-
-  market_maker <- function(){
-   a1 <- rep(0,4)
-   while(sum(a1)==0){
-     a1 <- sample(c(0,1), 4, replace = TRUE)
-   }
-   
-   a2 <- rep(0,4)
-   while(sum(a2)==0){
-     a2 <- sample(c(0,1), 4, replace = TRUE)
-   }
-
-    my_mkt_prods <- rbind(my_prod_table[which(a1==1),], my_prod_table[which(a2==1),])
-
-    my_mkt_prods <- data.frame(my_mkt_prods, firm = c(rep(1,sum(a1==1)),  rep(0,sum(a2==1)))) 
-
-    Jm <- dim(my_mkt_prods)[1]
-
-    Xi <- rnorm(Jm, 0, 1)
-    Omega <- rnorm(Jm, 0, 1)
-
-    my_mkt_muis <- my_muis[my_mkt_prods$j,]
-
-    my_rldmkt_obj <- rLogit_Demand_Market$new(Firms = my_mkt_prods$firm,
-                                              Muij_mat = my_mkt_muis,
-                                              Aij_mat = my_alphais,
-                                              Prod_ids = my_mkt_prods$j,
-                                              Delta = my_mkt_prods$delta,
-                                              Mc_fixed = my_mkt_prods$mc,
-                                              Mc_error = Xi,
-                                              Struct_error = Omega,
-                                              U_out_opt = 0,
-                                              Alpha = alpha)
-    return(my_rldmkt_obj)
-  }
-  return(market_maker)
-}
+source('MarketMaker.R')
 
 my_market_maker <- market_maker_factory() 
 ```
 
-Now I will call the `my_market_maker` 1000 times.  I store the results as a list collumn in a tibble (data.frame extension from the tidyverse). 
+Now I will call the `my_market_maker` 1000 times.  I store the results as a list column in a tibble (data.frame extension from the tidy-verse). 
 ```{r}
 T_ <- 1000
 library(tidyverse, quietly = TRUE)
-Markets <- tibble(period = 1:T_, market_obj=rerun(.n=T_, my_market_maker()))
+Markets <- tibble(period = 1:T_,
+                  marginal_cost_shifter = rnorm(T_))
+
+Markets$market_obj = map(Markets$marginal_cost_shifter, .f=~my_market_maker(mc_shift = .x))
 ```
 Storing objects in this way allows me to use `dplyr`/`purrr` to work with the objects. For example I want my data set to include shares and prices so I call the `zeta_fixed_point` method using `purrr::map`:
 ```{r}
-Markets <- Markets %>% mutate(
-  market_solved = map(market_obj, .f=~.x$zeta_fixed_point(tol=1e-6))
-)
+# wrap call to the zeta fixed point so errors are trapped
+call_safely <- function(x){
+  out <- tryCatch(x$zeta_fixed_point(tol = 1e-06, max_iter = 200), error = function(e){e})
+}
+
+Markets$markets_solved <- map(Markets$market_obj, .f=call_safely)
+
+# check if any of the markets threw an error
+which(map_lgl(Markets$markets_solved, .f=~class(.x)[1]!='rldmkt'))
 ```
-The tibble print method thinks that the `rldmkt` objects are S3 objects, but they are actually `R6` objects.  This does not effect the underlying data or our ability to compute on it.
+The tibble print method thinks that the `rldmkt` objects are S3 objects, but they are actually `R6` objects.  This does not alter the underlying data or our ability to compute on it.
 
 Now that we have 1000 observations of different markets lets extract the information from the `rldmkt`, and put them in a convenient form for estimating demand.
 
 ### Tidying up
 
-Tidy data has observations in rows, and variables in collumns [@tidydata].  This paradigm has become a key design principle in R, and I highly reccomended that data for demand estimation be stored in this way.  In fact by storing the 1000 markets in the data.frame with a list collumn I have already made the data tidy, and making it look more like a traditional data set will be straightforward using the tools available in the `tidyverse` for working with (and creating) tidy data. 
+Tidy data has observations in rows, and variables in columns [@tidydata].  This paradigm has become a key design principle in R, and I highly recommended that data for demand estimation be stored in this way.  In fact by storing the 1000 markets in the data.frame with a list column I have already made the data tidy, and making it look more like a traditional data set will be straightforward using the tools available in the `tidyverse` for working with (and creating) tidy data. 
 
 ```{r}
 demand_data <- Markets %>% mutate(
     market_dfs = map(market_obj, .f=~.x$getMarket()%>%select(Prod_ids, Firms, Price, Share))
   ) %>% 
-  select(period, market_dfs) %>%
+  select(period, marginal_cost_shifter, market_dfs) %>%
   unnest() %>%
   left_join(XP, by=c("Prod_ids" = "prodname"))
 

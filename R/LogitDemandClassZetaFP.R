@@ -9,13 +9,14 @@
 #' @export
 #'
 #' @examples #NA
-ldmkt_zeta_fixed_point <- function(tol){
+ldmkt_zeta_fixed_point <- function(tol, max_iter){
   Jt <- private$Jt
   MC <- as.numeric(private$cjs)
   self$share() # initial shares
   self$Ds_fun() # first derivative matrix
 
   error <- 1e6
+  counter <- 1
   while(TRUE){
     #print(private$Ds[['Lambda_p']])
     ## Update the price from the last iteration using the fixed point equation
@@ -40,9 +41,20 @@ ldmkt_zeta_fixed_point <- function(tol){
     if(is.nan(error)){
       stop('error is NaN')
     }
+
+
     if(error < tol){
       break
     }
+    counter <- counter + 1
+    if(counter > max_iter){
+      stop('hit max iterations')
+    }
+
+  }
+
+  if(any(as.numeric(private$Market[['Price']]) - MC < 0)){
+    stop('price > mc')
   }
 
   invisible(self)
