@@ -85,3 +85,9 @@ my_rldmkt_obj$zeta_fixed_point(tol = 1e-8, max_iter = 1e5)
 
 my_rldmkt_obj$markups()
 my_rldmkt_obj$getMarket()
+
+my_struct_error_fun <- function(N){
+  rnorm(N)
+}
+
+my_rldmkt_obj$inc_value(mc_error_fun = my_struct_error_fun, struct_error_fun = my_struct_error_fun, draws = 100, tol = 1e-8, Max_iter = 1e5)

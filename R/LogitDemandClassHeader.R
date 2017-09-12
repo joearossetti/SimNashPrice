@@ -11,6 +11,7 @@ Logit_Demand_Market <- R6::R6Class(
     Ds_fun = ldmkt_Ds_fun,
     zeta_fixed_point = ldmkt_zeta_fixed_point,
     exp_profits = ldmkt_exp_profits,
+    inc_value = ldmkt_inc_value,
     firm_profits_fun = ldmkt_firm_profits,
     markups = ldmkt_markups,
     marginal_cost = ldmkt_marginal_cost,

@@ -21,6 +21,7 @@ Imports:
 Collate:
     'LogitDemandClassConstructor.R'
     'LogitDemandClassExpProf.R'
+    'LogitDemandClassIncValue.R'
     'LogitDemandClassZetaFP.R'
     'LogitDemandClassMethods.R'
     'OwnershipMatrix.R'
@@ -30,6 +31,7 @@ Collate:
     'rLogitDemandClassConstructor.R'
     'rLogitDemandClassGetters.R'
     'rLogitDemandClassMethods.R'
+    'rLogitDemandClassIncValue.R'
     'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,
