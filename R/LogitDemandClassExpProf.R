@@ -13,11 +13,14 @@
 #' @export
 #'
 #' @examples #NA
-ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_iter){
+ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_iter, compute_inc_value=FALSE){
   var_prof_mat <- matrix(nrow = draws, ncol = private$num_firms)
+  if(compute_inc_value==TRUE){
+    inc_val_vec <- vector('numeric', length = draws)
+  }
   for(i in 1:draws){
     private$ujs <- private$Market[['Delta']] + struct_error_fun(private$Jt)
-    private$cjs <- private$Market[['Mc_fixed']]*exp(mc_error_fun(private$Jt))
+    private$cjs <- exp(private$Market[['Mc_fixed']])*exp(mc_error_fun(private$Jt))
 
     self$zeta_fixed_point(tol=tol, max_iter=Max_iter)
 
@@ -27,6 +30,20 @@ ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_it
       which_prods <- which(Mkt[['Firms']]==f)
       var_prof_mat[i,j] <- sum((as.numeric(Mkt[['Price']])[which_prods]-private$cjs[which_prods])*as.numeric(Mkt[['Share']])[which_prods])
     }
+
+    if(compute_inc_value==TRUE){
+      Index <- private$uijs - private$Market[['Price']] %*% private$Deriv_price
+      S <- exp(Index)
+      Denom <- exp(private$U_out_opt) + colSums(S)
+      inc_val_vec[i] <- mean(log(Denom) / private$Deriv_price)
+    }
+
+    private$cjs <- 0
   }
-  return(colSums(var_prof_mat)/draws)
+
+  profits <- colSums(var_prof_mat)/draws
+  if(compute_inc_value==TRUE){
+    attr(profits, "inc_value") <- sum(inc_val_vec)/draws
+  }
+  return(profits)
 }

@@ -54,7 +54,7 @@ ldmkt_zeta_fixed_point <- function(tol, max_iter){
   }
 
   if(any(as.numeric(private$Market[['Price']]) - MC < 0)){
-    stop('price > mc')
+    stop('price < mc')
   }
 
   invisible(self)

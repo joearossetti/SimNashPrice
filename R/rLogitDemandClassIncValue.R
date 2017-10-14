@@ -18,7 +18,7 @@ rldmkt_inc_value <- function(mc_error_fun, struct_error_fun, draws, tol, Max_ite
   inc_val_vec <- vector('numeric', length = draws)
   for(i in 1:draws){
     private$ujs <- private$Market[['Delta']] + struct_error_fun(private$Jt)
-    private$cjs <- private$Market[['Mc_fixed']]*exp(mc_error_fun(private$Jt))
+    private$cjs <- exp(private$Market[['Mc_fixed']])*exp(mc_error_fun(private$Jt))
 
     self$zeta_fixed_point(tol=tol, max_iter=Max_iter)
 
@@ -26,6 +26,8 @@ rldmkt_inc_value <- function(mc_error_fun, struct_error_fun, draws, tol, Max_ite
     S <- exp(Index)
     Denom <- exp(private$U_out_opt) + colSums(S)
     inc_val_vec[i] <- sum(log(Denom))
+
+    private$cjs <- 0
   }
   return(sum(inc_val_vec)/draws)
 }
