@@ -25,7 +25,7 @@ rldmkt_share <- function(){
 #' @examples #NA
 rldmkt_Ds_fun <- function(){
   Jt <- private$Jt
-  Lambda_p <- -diag(rowMeans(private$Si*as.numeric(private$Deriv_price)), nrow = Jt, ncol = Jt)
+  Lambda_p <- -diag(rowMeans(private$Si %*% diag(as.numeric(private$Deriv_price))), nrow = Jt, ncol = Jt)
   Gamma_p <- gamma_helper(Sr = private$Si, ar=private$Deriv_price, Or=private$O)
   D_p <- Lambda_p + Gamma_p
   Ds <- list(Lambda_p, Gamma_p, D_p)
@@ -33,6 +33,19 @@ rldmkt_Ds_fun <- function(){
   class(Ds) <- "LogitShareJacobian"
   private$Ds <- Ds
   invisible(self)
+}
+
+#' Test Envelope Helper
+#'
+#'
+#' @return return result of call to envelope helper
+#' @export
+#'
+#' @examples #NA
+rldmkt_test_env_helper <- function(Z){
+  Jt <- private$Jt
+  result <- envelope_helper(Z = Z, Sr = private$Si, ar=private$Deriv_price, p = as.numeric(private$Market[['Price']]), c = as.numeric(private$cjs), Or=private$O)
+  return(result)
 }
 
 
