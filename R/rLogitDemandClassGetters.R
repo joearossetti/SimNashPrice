@@ -48,3 +48,13 @@ rldmkt_getMuijs <- function(){
   return(private$muijs)
 }
 
+#' Get method for indiv. shares
+#'
+#' @return Sijs
+#' @export
+#'
+#' @examples #NA
+rldmkt_getSijs <- function(){
+  return(private$Si)
+}
+

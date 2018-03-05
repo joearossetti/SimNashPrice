@@ -35,17 +35,5 @@ rldmkt_Ds_fun <- function(){
   invisible(self)
 }
 
-#' Test Envelope Helper
-#'
-#'
-#' @return return result of call to envelope helper
-#' @export
-#'
-#' @examples #NA
-rldmkt_test_env_helper <- function(Z){
-  Jt <- private$Jt
-  result <- envelope_helper(Z = Z, Sr = private$Si, ar=private$Deriv_price, p = as.numeric(private$Market[['Price']]), c = as.numeric(private$cjs), Or=private$O)
-  return(result)
-}
 
 

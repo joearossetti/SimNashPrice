@@ -10,7 +10,8 @@ rLogit_Demand_Market <- R6::R6Class(
     getDs = ldmkt_getDs,
     Ds_fun = rldmkt_Ds_fun,
     zeta_fixed_point = ldmkt_zeta_fixed_point,
-    exp_profits = ldmkt_exp_profits,
+    exp_profits = rldmkt_exp_profits,
+    exp_profits_mat = rldmkt_exp_profits_mat,
     inc_value = rldmkt_inc_value,
     firm_profits_fun = ldmkt_firm_profits,
     markups = ldmkt_markups,
@@ -21,7 +22,14 @@ rLogit_Demand_Market <- R6::R6Class(
     getUijs = rldmkt_getUijs,
     getAlpha = rldmkt_getAlpha,
     getDerivPrice = rldmkt_getDerivPrice,
-    getMuijs = rldmkt_getMuijs
+    getMuijs = rldmkt_getMuijs,
+    getSijs = rldmkt_getSijs,
+    computeJacobians = rldmkt_computeJacobians,
+    grad_eq_prof = rldmkt_grad_eq_prof,
+    hessian_eq_prof = rldmkt_hessian_eq_prof,
+    Dv_reaction_fun = rldmkt_Dv_reaction_fun,
+    DvDv_reaction_fun = rldmkt_DvDv_reaction_fun,
+    exp_prof_apprx = rldmkt_exp_prof_apprx
   ),
   private = list(
     Market = NULL,
@@ -40,6 +48,12 @@ rLogit_Demand_Market <- R6::R6Class(
     aijs = NULL,
     cjs = NULL,
     num_firms = NULL,
-    firm_names= NULL
+    firm_names= NULL,
+    DDD = NULL,
+    Dp_y = NULL,
+    Dv_p = NULL,
+    Dw_p = NULL,
+    DwDw_p = NULL,
+    DvDv_p = NULL
   )
 )

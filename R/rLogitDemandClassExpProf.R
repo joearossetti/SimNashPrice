@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples #NA
-ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_iter, rel_tol=1e-16, compute_inc_value=FALSE){
+rldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_iter, rel_tol=1e-16, compute_inc_value=FALSE){
   var_prof_mat <- matrix(nrow = draws, ncol = private$num_firms)
   if(compute_inc_value==TRUE){
     inc_val_vec <- vector('numeric', length = draws)
@@ -24,6 +24,7 @@ ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_it
 
   for(i in 1:draws){
     private$ujs <- private$Market[['Delta']] + struct_error_fun(private$Jt)
+    private$uijs <- private$ujs + private$muijs
     private$cjs <- exp(private$Market[['Mc_fixed']])*exp(mc_error_fun(private$Jt))
 
     #print(private$ujs)
@@ -50,6 +51,7 @@ ldmkt_exp_profits <- function(mc_error_fun, struct_error_fun, draws, tol, Max_it
 
   private$cjs <- initial_cjs
   private$ujs <- initial_ujs
+  private$uijs <- private$ujs + private$muijs
 
   self$zeta_fixed_point(tol=tol, max_iter=Max_iter)
   self$markups()

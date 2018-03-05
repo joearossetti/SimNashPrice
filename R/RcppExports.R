@@ -5,3 +5,7 @@ gamma_helper <- function(Sr, ar, Or) {
     .Call('SimNashPrice_gamma_helper', PACKAGE = 'SimNashPrice', Sr, ar, Or)
 }
 
+envelope_helper <- function(Sr, ar) {
+    .Call('SimNashPrice_envelope_helper', PACKAGE = 'SimNashPrice', Sr, ar)
+}
+

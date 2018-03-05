@@ -75,6 +75,8 @@ rldmkt_construct <- function(Firms,
                                'Mc_fixed'=Mc_fixed,
                                'Struct_Err'=Struct_error,
                                'Markup' = Markup)
+
+
   private$muijs <- Muij_mat
   private$aijs <- Aij_mat
   private$ujs <- Delta + Struct_error

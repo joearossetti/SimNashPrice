@@ -17,14 +17,17 @@ RoxygenNote: 5.0.1
 Imports:
     R6,
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    assertthat
 Collate:
     'LogitDemandClassConstructor.R'
     'LogitDemandClassExpProf.R'
+    'LogitDemandClassExpProf2.R'
     'LogitDemandClassIncValue.R'
     'LogitDemandClassZetaFP.R'
     'LogitDemandClassMethods.R'
     'OwnershipMatrix.R'
+    'Multiplication.R'
     'LogitDemandClassHeader.R'
     'RcppExports.R'
     'SimNashPrice.R'
@@ -32,6 +35,10 @@ Collate:
     'rLogitDemandClassGetters.R'
     'rLogitDemandClassMethods.R'
     'rLogitDemandClassIncValue.R'
+    'rlogitDerivatives.R'
+    'rLogitDemandClassExpProfApprx.R'
+    'rLogitDemandClassExpProf2.R'
+    'rLogitDemandClassExpProf.R'
     'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,
@@ -39,3 +46,4 @@ LinkingTo:
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+ByteCompile: true
