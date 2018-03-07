@@ -37,9 +37,9 @@ Collate:
     'rLogitDemandClassExpProfApprx.R'
     'rLogitDemandClassGetters.R'
     'rLogitDemandClassMethods.R'
-    'rLogitDemandClassHeader.R'
-    'rLogitDemandClassIncValue.R'
     'rlogitDerivatives.R'
+    'rLogitDemandClassIncValue.R'
+    'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,
   RcppArmadillo

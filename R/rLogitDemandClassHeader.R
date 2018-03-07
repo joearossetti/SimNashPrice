@@ -1,4 +1,4 @@
-#' @include RcppExports.R OwnershipMatrix.R rLogitDemandClassConstructor.R rLogitDemandClassGetters.R rLogitDemandClassMethods.R
+#' @include RcppExports.R OwnershipMatrix.R rLogitDemandClassConstructor.R rLogitDemandClassGetters.R rLogitDemandClassMethods.R rLogitDerivatives.R
 #' @export
 rLogit_Demand_Market <- R6::R6Class(
   "rldmkt",
