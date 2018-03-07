@@ -35,5 +35,25 @@ rldmkt_Ds_fun <- function(){
   invisible(self)
 }
 
+#' Inclusive Value Rand Coef (Fixed)
+#'
+#' Compute the inclusive value of consumers (re-computes market shares, does not compute prices)
+#'
+#' @return return the inclusive value of consumers
+#' @export
+#'
+#' @examples #NA
+rldmkt_CVEV <- function(){
+
+  self$share()
+
+  Index <- private$uijs - private$Market[['Price']] %*% private$Deriv_price
+  S <- exp(Index)
+  Denom <- exp(private$U_out_opt) + colSums(S)
+  inc_val_vec[i] <- mean(log(Denom) / private$Deriv_price)
+
+  return(inc_value)
+}
+
 
 

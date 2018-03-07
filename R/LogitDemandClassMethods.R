@@ -37,22 +37,50 @@ ldmkt_Ds_fun <- function(){
 
 #' Firm Profits
 #'
-#' compute the profits of the firms, set this private attribute, and return the profits
+#' Compute the profits of the firms, set this private attribute, and return the profits.
+#'  If there are no values for the fixed part of marginal cost then
 #'
 #' @return return the firm profits
 #' @export
 #'
 #' @examples #NA
 ldmkt_firm_profits <- function(){
+
+  if(any(private$MarketMkt[['Markups']]==0)){
+    if(any(private$MarketMkt[['Mc_fixed']]==0)){
+      self$markups
+    }else{
+      self$markupsb
+    }
+  }
+
   var_profs <- vector('numeric', length(private$num_firms))
   for(j in 1:private$num_firms){
     f <- private$firm_names[j]
-    Mkt <- private$Market
-    which_prods <- which(Mkt[['Firms']]==f)
-    var_prof[j] <- sum((as.numeric(Mkt[['Price']])[which_prods]-private$cjs[which_prods])*as.numeric(Mkt[['Share']])[which_prods])
+    which_prods <- which(private$MarketMkt[['Firms']]==f)
+    var_prof[j] <- sum(as.numeric(private$MarketMkt[['Markups']])*as.numeric(Mkt[['Share']])[which_prods])
   }
   private$firm_profits <- var_profs
   return(var_profs)
+}
+
+#' Inclusive Value Logit (Fixed)
+#'
+#' Compute the inclusive value of consumers (re-computes market shares, does not compute prices)
+#'
+#' @return return the inclusive value of consumers
+#' @export
+#'
+#' @examples #NA
+ldmkt_CVEV <- function(){
+
+  self$share()
+
+  delta <- private$ujs - private$Deriv_price * private$Market[['Price']]
+  S <- exp(delta)
+  inc_value <- (log(exp(private$U_out_opt) + sum(S)))/private$Deriv_price
+
+  return(inc_value)
 }
 
 #' Markup method

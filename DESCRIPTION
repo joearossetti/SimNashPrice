@@ -27,7 +27,6 @@ Collate:
     'LogitDemandClassMethods.R'
     'OwnershipMatrix.R'
     'LogitDemandClassHeader.R'
-    'LogitDemandClassIncValue.R'
     'Multiplication.R'
     'RcppExports.R'
     'SimNashPrice.R'
@@ -38,7 +37,6 @@ Collate:
     'rLogitDemandClassGetters.R'
     'rLogitDemandClassMethods.R'
     'rlogitDerivatives.R'
-    'rLogitDemandClassIncValue.R'
     'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,

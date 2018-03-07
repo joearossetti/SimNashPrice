@@ -29,7 +29,8 @@ rLogit_Demand_Market <- R6::R6Class(
     hessian_eq_prof = rldmkt_hessian_eq_prof,
     Dv_reaction_fun = rldmkt_Dv_reaction_fun,
     DvDv_reaction_fun = rldmkt_DvDv_reaction_fun,
-    exp_prof_apprx = rldmkt_exp_prof_apprx
+    exp_prof_apprx = rldmkt_exp_prof_apprx,
+    CVEV = rldmkt_CVEV
   ),
   private = list(
     Market = NULL,
