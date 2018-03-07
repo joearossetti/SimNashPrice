@@ -177,3 +177,20 @@ ldmkt_getDs <- function(){
   return(private$Ds)
 }
 
+#' Set Prices
+#'
+#' @param price_vec prices to set prices too
+#'
+#' @return sets private price variable
+#' @export
+#'
+#' @examples #NA
+ldmkt_setPrice <- function(price_vec){
+  if(is.null(dim(private$Market[['Price']]))){
+    private$Market[['Price']] <- price_vec
+  }else{
+    private$Market[['Price']] <- t(price_vec)
+  }
+  invisible(self)
+}
+

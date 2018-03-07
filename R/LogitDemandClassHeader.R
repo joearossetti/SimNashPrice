@@ -18,7 +18,8 @@ Logit_Demand_Market <- R6::R6Class(
     marginal_cost = ldmkt_marginal_cost,
     getUjs = ldmkt_getUjs,
     getCjs = ldmkt_getCjs,
-    CVEV = ldmkt_CVEV
+    CVEV = ldmkt_CVEV,
+    setPrice = ldmkt_setPrice
   ),
   private = list(
     Market = NULL,
