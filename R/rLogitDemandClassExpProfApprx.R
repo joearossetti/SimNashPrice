@@ -10,7 +10,7 @@ rldmkt_exp_prof_apprx <- function(name_of_firm, mean_vec, cov_mat, tol, rel_tol,
   which_is_not_firm <- which(private$Market[['Firms']]!=name_of_firm)
 
   self$zeta_fixed_point(tol=tol, rel_tol= rel_tol, max_iter=Max_iter, quietly=quietly)
-  self$markups()
+  self$markupsb()
   self$computeJacobians()
   self$Dv_reaction_fun(costs=costs)
   self$DvDv_reaction_fun(costs=costs)

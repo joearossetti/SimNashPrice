@@ -68,6 +68,19 @@ ldmkt_markups <- function(){
   invisible(self)
 }
 
+#' Markup Additive
+#'
+#' Compute markups when marginal cost is known
+#'
+#' @return invisible return self
+#' @export
+#'
+#' @examples #NA
+ldmkt_markupsb <- function(){
+  private$Market[['Markup']] <- private$Market[['Price']] - private$cjs
+  invisible(self)
+}
+
 #' Marginal Cost method
 #'
 #' Compute marginal costs by subtracting the markup from the price
