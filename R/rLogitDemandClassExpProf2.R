@@ -33,17 +33,17 @@ rldmkt_exp_profits_mat <- function(mc_error_mat, struct_error_mat, draws,tol, Ma
 
     private$cjs <- exp(private$Market[['Mc_fixed']])*exp(t(as.numeric(mc_error_mat[i,])))
 
-    #private$Market[['Price']] <- rep(0, private$Jt)
+    private$Market[['Price']] <- private$cjs + private$Market[['Markup']]
 
     self$zeta_fixed_point(tol=tol, max_iter=Max_iter, rel_tol=rel_tol, quietly=quietly)
     self$markupsb()
-    Mkt <- private$Market
+    #Mkt <- private$Market
 
 
     for(j in 1:private$num_firms){
       f <- private$firm_names[j]
-      which_prods <- which(Mkt[['Firms']]==f)
-      var_prof_mat[i,j] <- sum(Mkt[['Markup']][which_prods]*Mkt[['Share']][which_prods])
+      which_prods <- which(private$Market[['Firms']]==f)
+      var_prof_mat[i,j] <- sum(private$Market[['Markup']][which_prods]*private$Market[['Share']][which_prods])
     }
 
     if(compute_inc_value==TRUE){
