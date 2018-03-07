@@ -73,19 +73,24 @@ rldmkt_grad_eq_prof <- function(name_of_firm){
   if(length(which_is_firm)==1){
     grad_prof_f <- private$DDD$Dp_s[which_is_not_firm, which_is_firm] * b[which_is_firm]
   }else{
-    grad_prof_f <- private$DDD$Dp_s[which_is_not_firm, which_is_firm] %*% b[which_is_firm]
+    grad_prof_f <- b[which_is_firm] %*% private$DDD$Dp_s[which_is_firm, which_is_not_firm]
   }
 
-  for(l in 1:private$Jt){
-    ## computing derivative of profit
-    dv_prof <- private$DDD$Dv_s[which_is_firm,l] %*% b[which_is_firm]
+  # firms_total_grad <- numeric(private$Jt)
+  # for(l in 1:private$Jt){
+  #   ## computing derivative of profit
+  #   dv_prof <- private$DDD$Dv_s[which_is_firm,l] %*% b[which_is_firm]
+  #
+  #   ## total gradient of eq. profits wrt v
+  #   #print(firm_number_id)
+  #   firms_total_grad[l] <- sum(grad_prof_f * private$DDD$Dv_p[which_is_not_firm,l]) + dv_prof
+  # }
 
-    ## total gradient of eq. profits wrt v
-    #print(firm_number_id)
-    private$firms_total_grad[firm_number_id,l] <- sum(grad_prof_f * private$DDD$Dv_p[which_is_not_firm,l]) + dv_prof
-  }
+  dv_prof <- b[which_is_firm] %*% private$DDD$Dv_s[which_is_firm,]
 
-  return(private$firms_total_grad[firm_number_id,])
+  firms_total_grad <- grad_prof_f %*% private$DDD$Dv_p[which_is_not_firm,] + dv_prof
+
+  return(firms_total_grad)
   #invisible(self)
 }
 

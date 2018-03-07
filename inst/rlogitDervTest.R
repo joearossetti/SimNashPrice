@@ -98,7 +98,7 @@ my_test_market_obj <- test_mkt_maker()
 #
 # old_exp_profs <- my_test_market_obj$exp_profits(mc_error_fun = function(N){Omega}, struct_error_fun = my_struct_error_fun, draws = 10, tol = 1e-8, Max_iter = 2000)
 
-my_draws <- 50
+my_draws <- 5
 num_prods <- length(my_test_market_obj$getMarket()[['Mc_error']])
 
 #my_mc_error_mat <- matrix(Omega, my_draws, num_prods)
@@ -125,16 +125,16 @@ old_exp_profs_mat[i,] <- old_exp_profs50
 }
 
 
-my_means <- rep(0, num_prods)
+my_means <- rep(0, num_prods*2)
 
-my_cov_mat <- diag(c(rep(2, num_prods)), num_prods, num_prods)
+my_cov_mat <- diag(c(rep(0.5, num_prods), rep(0.05, num_prods)), num_prods*2, num_prods*2)
 
 test_exp_profits <- my_test_market_obj$exp_prof_apprx(name_of_firm = 1,
                                                       mean_vec = my_means,
                                                       cov_mat = my_cov_mat,
                                                       tol = .Machine$double.eps,
                                                       rel_tol = .Machine$double.eps,
-                                                      Max_iter = 2000, quietly=TRUE, costs=FALSE)
+                                                      Max_iter = 2000, quietly=TRUE, costs=TRUE)
 
 microbenchmark::microbenchmark(my_test_market_obj$exp_prof_apprx(name_of_firm = 1,
                                                                  mean_vec = my_means,

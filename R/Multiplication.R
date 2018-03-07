@@ -1,7 +1,7 @@
 vector_times_cube <- function(vec, cube, com_dim){
   mat <- matrix(0, com_dim, com_dim)
   for(j in 1:com_dim){
-    mat[j,] <- cube[,,j] %*% vec
+    mat[j,] <- vec %*% cube[,,j]
   }
   return(mat)
 }
@@ -9,7 +9,7 @@ vector_times_cube <- function(vec, cube, com_dim){
 vector_times_cube2 <- function(vec, cube, com_dim, dim){
   mat <- matrix(0, dim[1], dim[2])
   for(j in 1:com_dim){
-    mat[j,] <- cube[,,j] %*% vec
+    mat[j,] <- vec %*% cube[,,j]
   }
   return(mat)
 }
@@ -22,7 +22,7 @@ vector_times_field <- function(vec, field, com_dim){
   #   }
   # }
   for(k in 1:com_dim){
-    cube[,,j] <- vector_times_cube(vec = vec, cube = field[[k]], com_dim = com_dim)
+    cube[,,k] <- vector_times_cube(vec = vec, cube = field[[k]], com_dim = com_dim)
   }
   return(cube)
 }
