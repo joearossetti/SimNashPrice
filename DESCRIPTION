@@ -19,27 +19,27 @@ Imports:
     Rcpp,
     RcppArmadillo,
     assertthat
-Collate:
+Collate: 
     'LogitDemandClassConstructor.R'
     'LogitDemandClassExpProf.R'
     'LogitDemandClassExpProf2.R'
-    'LogitDemandClassIncValue.R'
     'LogitDemandClassZetaFP.R'
     'LogitDemandClassMethods.R'
     'OwnershipMatrix.R'
-    'Multiplication.R'
     'LogitDemandClassHeader.R'
+    'LogitDemandClassIncValue.R'
+    'Multiplication.R'
     'RcppExports.R'
     'SimNashPrice.R'
     'rLogitDemandClassConstructor.R'
+    'rLogitDemandClassExpProf.R'
+    'rLogitDemandClassExpProf2.R'
+    'rLogitDemandClassExpProfApprx.R'
     'rLogitDemandClassGetters.R'
     'rLogitDemandClassMethods.R'
+    'rLogitDemandClassHeader.R'
     'rLogitDemandClassIncValue.R'
     'rlogitDerivatives.R'
-    'rLogitDemandClassExpProfApprx.R'
-    'rLogitDemandClassExpProf2.R'
-    'rLogitDemandClassExpProf.R'
-    'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,
   RcppArmadillo
