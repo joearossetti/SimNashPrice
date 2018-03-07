@@ -77,7 +77,7 @@ ldmkt_markups <- function(){
 #'
 #' @examples #NA
 ldmkt_markupsb <- function(){
-  private$Market[['Markup']] <- as.numeric(private$Market[['Price']]) - private$cjs
+  private$Market[['Markup']] <- t(as.numeric(private$Market[['Price']]) - private$cjs)
   invisible(self)
 }
 

@@ -33,7 +33,7 @@ rldmkt_exp_profits_mat <- function(mc_error_mat, struct_error_mat, draws,tol, Ma
 
     private$cjs <- exp(private$Market[['Mc_fixed']])*exp(t(as.numeric(mc_error_mat[i,])))
 
-    private$Market[['Price']] <- private$cjs + private$Market[['Markup']]
+    private$Market[['Price']] <- t(private$cjs + as.numeric(private$Market[['Markup']]))
 
     self$zeta_fixed_point(tol=tol, max_iter=Max_iter, rel_tol=rel_tol, quietly=quietly)
     self$markupsb()

@@ -91,22 +91,22 @@ my_test_market_obj <- test_mkt_maker()
 #                                   tol = 1e-8,
 #                                   Max_iter = 2000) )
 
-Omega <- my_test_market_obj$getMarket()[['Mc_error']]
+#Omega <- my_test_market_obj$getMarket()[['Mc_error']]
 
 #x_norm <- rnorm(500, 0, 2)
 # my_struct_error_fun <- function(N){sample(x = x_norm, size = N)}
 #
 # old_exp_profs <- my_test_market_obj$exp_profits(mc_error_fun = function(N){Omega}, struct_error_fun = my_struct_error_fun, draws = 10, tol = 1e-8, Max_iter = 2000)
 
-my_draws <- 1000
+my_draws <- 50
 num_prods <- length(my_test_market_obj$getMarket()[['Mc_error']])
 
-my_mc_error_mat <- matrix(Omega, my_draws, num_prods)
-#my_mc_error_mat <- matrix(rnorm(num_prods*my_draws, 0, 0.05), my_draws, num_prods)
+#my_mc_error_mat <- matrix(Omega, my_draws, num_prods)
+my_mc_error_mat <- matrix(rnorm(num_prods*my_draws, 0, 0.05), my_draws, num_prods)
 my_struct_error_mat <- matrix(rnorm(num_prods*my_draws, 0, 2), my_draws, num_prods)
 
 old_exp_profs2 <- my_test_market_obj$exp_profits_mat(mc_error_mat = my_mc_error_mat, struct_error_mat = my_struct_error_mat,
-                                                     draws = my_draws, tol = .Machine$double.eps, Max_iter = 2000, rel_tol=.Machine$double.eps, compute_inc_value = FALSE, quietly=TRUE)
+                                                     draws = my_draws, tol = .Machine$double.eps, Max_iter = 2000, rel_tol=.Machine$double.eps, compute_inc_value = TRUE, quietly=FALSE)
 
 
 old_exp_profs_mat <- matrix(NA, 500, 2)
