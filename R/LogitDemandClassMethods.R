@@ -105,11 +105,8 @@ ldmkt_markups <- function(){
 #'
 #' @examples #NA
 ldmkt_markupsb <- function(){
-  if(is.null(dim(private$Market[['Markup']]))){
-    private$Market[['Markup']] <- as.numeric(private$Market[['Price']]) - private$cjs
-  }else{
-    private$Market[['Markup']] <- t(as.numeric(private$Market[['Price']]) - private$cjs)
-  }
+
+  private$Market[['Markup']] <- as.numeric(as.numeric(private$Market[['Price']]) - private$cjs)
 
   invisible(self)
 }
@@ -185,12 +182,8 @@ ldmkt_getDs <- function(){
 #' @export
 #'
 #' @examples #NA
-ldmkt_setPrice <- function(price_vec){
-  if(is.null(dim(private$Market[['Price']]))){
-    private$Market[['Price']] <- price_vec
-  }else{
-    private$Market[['Price']] <- t(price_vec)
-  }
+ldmkt_setPrice <- function(price_col_vec){
+  private$Market[['Price']] <- price_col_vec
   invisible(self)
 }
 

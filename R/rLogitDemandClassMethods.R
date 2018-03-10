@@ -50,7 +50,7 @@ rldmkt_CVEV <- function(){
   Index <- private$uijs - private$Market[['Price']] %*% private$Deriv_price
   S <- exp(Index)
   Denom <- exp(private$U_out_opt) + colSums(S)
-  inc_val_vec[i] <- mean(log(Denom) / private$Deriv_price)
+  inc_value <- mean(log(Denom) / private$Deriv_price)
 
   return(inc_value)
 }
