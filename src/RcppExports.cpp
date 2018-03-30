@@ -19,22 +19,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// envelope_helper
-List envelope_helper(NumericMatrix Sr, NumericVector ar);
-RcppExport SEXP SimNashPrice_envelope_helper(SEXP SrSEXP, SEXP arSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type Sr(SrSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ar(arSEXP);
-    rcpp_result_gen = Rcpp::wrap(envelope_helper(Sr, ar));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"SimNashPrice_gamma_helper", (DL_FUNC) &SimNashPrice_gamma_helper, 3},
-    {"SimNashPrice_envelope_helper", (DL_FUNC) &SimNashPrice_envelope_helper, 2},
     {NULL, NULL, 0}
 };
 

@@ -13,25 +13,31 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/joearossetti/SimNashPrice
-RoxygenNote: 6.0.1
+RoxygenNote: 5.0.1
 Imports:
     R6,
     Rcpp,
     RcppArmadillo,
     assertthat
 Collate: 
-    'PotentialProdDfFun.R'
-    'MktConstruct.R'
-    'MktSetters.R'
-    'MktGetters.R'
-    'MktMethods.R'
-    'MarketClassHeader.R'
-    'LandRMktConstructors.R'
-    'LMarketMethods.R'
-    'RLMarketMethods.R'
-    'RandLMarketClassHeader.R'
+    'LogitDemandClassConstructor.R'
+    'LogitDemandClassExpProf.R'
+    'LogitDemandClassExpProf2.R'
+    'LogitDemandClassZetaFP.R'
+    'LogitDemandClassMethods.R'
+    'OwnershipMatrix.R'
+    'LogitDemandClassHeader.R'
+    'Multiplication.R'
     'RcppExports.R'
     'SimNashPrice.R'
+    'rLogitDemandClassConstructor.R'
+    'rLogitDemandClassExpProf.R'
+    'rLogitDemandClassExpProf2.R'
+    'rLogitDemandClassExpProfApprx.R'
+    'rLogitDemandClassGetters.R'
+    'rLogitDemandClassMethods.R'
+    'rlogitDerivatives.R'
+    'rLogitDemandClassHeader.R'
 LinkingTo:
   Rcpp,
   RcppArmadillo
