@@ -30,6 +30,9 @@ Collate:
     'LMarketMethods.R'
     'RLMarketMethods.R'
     'RandLMarketClassHeader.R'
+    'MarketCFConstructor.R'
+    'ExecCFMethod.R'
+    'MarketCFHeader.R'
     'RcppExports.R'
     'SimNashPrice.R'
 LinkingTo:

@@ -19,10 +19,7 @@ Market <- R6::R6Class(
     setShares = setShares,
     setShocks = setShocks,
     setActiveProds = setActiveProds,
-    updateActivity = updateActivity,
-    grad_tp = NULL,
-    tp_diff = NULL,
-    hmc_sim = NULL
+    updateActivity = updateActivity
   ),
   private = list(
     Potential_products = NULL,

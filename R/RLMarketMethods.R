@@ -43,6 +43,7 @@ rlmkt_exp_profs <- function(mc_error_mat, struct_error_mat, draws,tol, Max_iter,
   initial_cjs <- private$costs
 
   for(i in 1:draws){
+    #print(i)
 
     self$setShocks(Cost_shocks=mc_error_mat[i,], Taste_shocks=struct_error_mat[i,])
     self$updateUijs()
