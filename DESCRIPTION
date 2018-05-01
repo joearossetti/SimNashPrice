@@ -5,8 +5,8 @@ Version: 0.0.1.000
 Author: Joseph Rossetti
 Maintainer: Joseph Rossetti <rossetti.28@osu.edu>
 Description: This pacakge takes as input results from a BLP style demand
-    estimation. It will compute the so called Bertrand Nash Prices, the resulting
-    market shares, and profits. It also has a simulation routine for drawing from
+    estimation. It will compute the Bertrand Nash Prices, the resulting
+    market shares, and profits.  This functionality can be used to evaluate counterfactuals. It can also compute welfare measures and marginal costs based on demand estimates. It also has a simulation routine for drawing from
     the structural errors and computing ex-ante expectations of shares, prices, and
     profits.
 License: GPL-3
@@ -18,7 +18,13 @@ Imports:
     R6,
     Rcpp,
     RcppArmadillo,
-    assertthat
+    assertthat,
+    hash,
+    digest,
+    foreach,
+    doParallel,
+    purrr,
+    mvnfast
 Collate: 
     'PotentialProdDfFun.R'
     'MktConstruct.R'
@@ -32,6 +38,8 @@ Collate:
     'RandLMarketClassHeader.R'
     'MarketCFConstructor.R'
     'ExecCFMethod.R'
+    'MarketCFGradient.R'
+    'MarketCFsampleHMC.R'
     'MarketCFHeader.R'
     'RcppExports.R'
     'SimNashPrice.R'

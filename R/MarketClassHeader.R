@@ -14,6 +14,7 @@ Market <- R6::R6Class(
     getMeanUs = getMeanUs,
     getWhichFirm = getWhichFirm,
     getDs_list = getDs,
+    getJt = getJt,
     ZFP = ZFP,
     setPrices = setPrice,
     setShares = setShares,

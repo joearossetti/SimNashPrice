@@ -76,6 +76,9 @@ test_rlmkt_exp_profs <- my_test_rlmkt$exp_profs(mc_error_mat = my_mc_error_mat,
                                                 draws = my_draws,
                                                 tol = .Machine$double.neg.eps, Max_iter = 2000, rel_tol = .Machine$double.neg.eps)
 
+my_test_rlmkt$getWhichFirm(1)
+my_test_rlmkt$getWhichFirm(2)
+
 microbenchmark::microbenchmark({
   test_rlmkt_exp_profs <- my_test_rlmkt$exp_profs(mc_error_mat = my_mc_error_mat,
                                                   struct_error_mat = my_struct_error_mat,

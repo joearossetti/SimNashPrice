@@ -16,7 +16,7 @@ getMarket <- function(){
 getProfits <- function(){
   profit_vec <- numeric(private$num_firms)
   for(i in 1:private$num_firms){
-    is_firm <- private$Which_is_firm_mat[i]
+    is_firm <- private$Which_is_firm_mat[,i]
     profit_vec[i] <- sum((private$prices[is_firm] - private$costs[is_firm]) * private$shares[is_firm])
   }
   return(profit_vec)
@@ -44,9 +44,14 @@ getMeanUs <- function(){
 
 getWhichFirm <- function(a_firm_id){
   ## check valid
-  private$Which_is_firm_mat[which(private$firm_names==a_firm_id)]
+  private$Which_is_firm_mat[,which(private$firm_names==a_firm_id)]
 }
 
 getDs <- function(){
   list('Lambda' = private$Lambda, 'Gamma' = private$Gamma, 'Ds' = private$Ds, 'O_mat' = private$O_mat)
 }
+
+getJt <- function(){
+  private$Jt
+}
+
