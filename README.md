@@ -8,10 +8,10 @@ I organize information about specific markets (in practice often a time-location
 
 Using an object oriented approach unifies the representation of the markets and will make it easy to build extensions without having to think about how to organize new information.  It also avoids relying on the user specifying important parameters in the computational enviroment--they just need to call the constructor. 
 
-I use the R6 package as the OOP system. This allows for traditional OOP pass by reference, so that methods never copy on modify which allows for faster computation.  R6 allows for private attributes--which encapsulates the state of each market, preventing shared/mutable state errors. Users concerned about replicability may create clones of the initial object state. R6 is faster and has less memory overhead the the RC system.
+I use the R6 package as the OOP system. This allows for traditional OOP pass by reference, (methods don't copy on modify) which allows for faster computation.  R6 allows for private attributes--which encapsulates the state of each market, preventing shared/mutable state errors. Users concerned about replicability may create clones of the initial object state. R6 is faster and has less memory overhead the the RC system.
 
-Eventually, I will add nested logit demand market classes to the package.
+Eventually, I will add nested logit demand market classes and more complex price models to the package.
 
-There is also a simulation tool. The user specifies market primitives and functions for drawing from Berry (1994) type structural errors, and is returned the firms expected variable profits (average over the simulation draws). 
+There are also some simulation tools. The user specifies market primitives and functions for drawing from Berry (1994) type structural errors, and is returned the firms expected variable profits (average over the simulation draws). Another tool allows the user to generate simulated data for testing demand estimation.  Finally, there is a tool that conducts a monte carlo simulation of a single firm (e.g. in a monopoly) choosing products.
 
 	
