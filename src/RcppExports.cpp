@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // gamma_helper
 NumericMatrix gamma_helper(NumericMatrix Sr, NumericVector ar, NumericMatrix Or);
-RcppExport SEXP SimNashPrice_gamma_helper(SEXP SrSEXP, SEXP arSEXP, SEXP OrSEXP) {
+RcppExport SEXP _SimNashPrice_gamma_helper(SEXP SrSEXP, SEXP arSEXP, SEXP OrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"SimNashPrice_gamma_helper", (DL_FUNC) &SimNashPrice_gamma_helper, 3},
+    {"_SimNashPrice_gamma_helper", (DL_FUNC) &_SimNashPrice_gamma_helper, 3},
     {NULL, NULL, 0}
 };
 

@@ -17,6 +17,14 @@ rlmkt_share_fun <- function(){
 rlmkt_Ds_fun <- function(){
   Jt <- private$Jt
   private$Lambda <- -diag(rowMeans(private$Si %*% private$diag_deriv_price), nrow = Jt, ncol = Jt)
+  
+  # print('Si')
+  # print(private$Si)
+  # print('ar')
+  # print(as.numeric(private$deriv_price))
+  # print('Or')
+  # print(private$O_mat)
+  
   private$Gamma <- gamma_helper(Sr = private$Si, ar=as.numeric(private$deriv_price), Or=private$O_mat)
   private$Ds <- private$Lambda + private$Gamma
   invisible(self)

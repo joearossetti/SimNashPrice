@@ -52,5 +52,6 @@ setActiveProds <- function(Activity_matrix){
 
   private$A_mat <- Activity_matrix
   self$updateActivity()
+  self$Ownership()
   invisible(self)
 }
